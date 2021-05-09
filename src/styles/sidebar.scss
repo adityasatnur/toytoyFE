@@ -1,0 +1,132 @@
+.sidebar {
+  animation-name: fadeOutLeft;
+  transform: translateX(34vw);
+  animation-duration: 1s;
+  &.sidebar-open{
+    display: block;
+    animation-name: fadeInRight;
+    animation-duration: 1s;
+  animation-direction:normal; 
+  width: 28vw;
+  padding: 30px;
+  transform: translateX(0);
+}
+padding: 30px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 60px);
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 10px 0 0 10px;
+  box-shadow: 0 0 21px #00000017;
+  &-header {
+    display: flex;
+    align-items: center;
+    font-family: "Poppins500", sans-serif;
+    font-size: 1rem;
+    & > * {
+      margin-right: 20px;
+    }
+    .shoppingBag {
+      position: relative;
+      display: flex;
+      span {
+        position: absolute;
+        background: #50b061;
+        padding: 2px 8px 12px 7px;
+        width: 10px;
+        height: 10px;
+        color: #fff;
+        border-radius: 5px;
+        right: -9px;
+        font-size: 14px;
+        top: -7px;
+      }
+    }
+    img {
+      width: 30px;
+      background: #fef5da;
+      border-radius: 17px;
+      padding: 10px;
+    }
+    .userIcon {
+      padding: 0;
+      width: 50px;
+    }
+  }
+  &-footer{
+      button{
+        background-color: #50b061;
+        border-radius: 1rem;
+        color: #fff;; 
+        width: 100%;
+        padding: 1rem;
+        font-size: 19px;
+        border-radius: 16px;
+    font-family: "Poppins500", sans-serif;
+    }
+  }
+  &-order-list{
+    border-bottom: 2px dashed lightgray;
+    margin-bottom: 1.5rem;
+    .list-title{
+      display: flex;
+    font-family: "Poppins500", sans-serif;
+    font-size: 22px;
+    justify-content: space-between;
+    margin: 3.5rem 0 1.5rem;
+      img{width: 20px;}
+    }
+  }
+  &-total{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    div:last-child{
+      flex-grow: 1;
+      text-align: end;
+      font-family: "Poppins500", sans-serif;
+      opacity: 0.3;
+    }
+    div:nth-child(2){
+      font-family: "Poppins500", sans-serif;
+      span{
+      font-family: "Poppins300", sans-serif;
+      color: #f6b643;
+      }
+    }
+    .deliveryTruck{
+      width: 100px;
+      height: 60px;
+      background: #fef5da;
+      border-radius: 18px;
+      text-align: center;
+      margin-right: 1rem;
+      img{
+        width: 30px;
+        transform: translateY(13px);
+      }
+    }
+  }
+}
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(28vw);
+ }
+ 100% {
+    opacity: 1;
+    transform: translateX(0);
+ }
+}
+@keyframes fadeOutLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(28vw);
+ }
+}

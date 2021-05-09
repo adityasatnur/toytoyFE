@@ -1,13 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
-import './index.css';
+import ProductLandingPage from './pages/ProductLandingPage'
+import './index.scss';
 
 const App = () => {
   return (
-    <div>
-        <div>Welcome to my-webpack-react-starter</div>
-    </div>
+    <ProductLandingPage/>
   );
 };
 

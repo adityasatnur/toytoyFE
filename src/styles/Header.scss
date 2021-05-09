@@ -1,0 +1,36 @@
+
+.Header{
+    font-family: 'Poppins100', sans-serif;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    .hamburger{
+        div{
+        border: 1px solid;
+        width: 10px;
+        border-radius: 3px;
+        width: 30px;
+        margin: 5px;
+        transition: all 0.4s;
+
+    }
+    &.sidebar-open{
+        div:first-child{
+            transform: rotate(45deg);
+            top: 3px;
+            position: relative;
+            transition: all 0.4s;
+        }
+        div:last-child{
+            transform: rotate(-45deg);
+            top: -4px;
+            position: relative;
+            transition: all 0.2s;
+        }
+        div:nth-child(2){
+            display: none;
+            transition: all 0.4s;
+        }
+    }
+}
+}

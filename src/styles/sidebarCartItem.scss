@@ -1,0 +1,31 @@
+.SidebarCartItem{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    div:first-child{
+        width: 100px;
+        height: 60px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 18px;
+        box-shadow: 0 0 5px #0000001a;
+        margin-right: 1rem;
+    }
+    >p{
+        flex-grow: 1;
+        text-align: end;
+        font-family: "Poppins500", sans-serif;
+        opacity: 0.3;
+    }
+    .itemDetails{
+        display: flex;
+        align-items: center;
+        font-family: "Poppins400", sans-serif;
+        font-size: 14px;;
+        p:nth-child(2){
+            margin: 0.5rem;
+            opacity: 0.3;
+        }
+    }
+}
