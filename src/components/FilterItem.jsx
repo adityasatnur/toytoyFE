@@ -1,9 +1,14 @@
 
 import React from 'react';
+import Sports from "../assets/icons/sports.png";
+import '../styles/filterItems.scss'
 
-const FilterItem = () => {
+const FilterItem = (props) => {
 return(
-    <div>FilterItem</div>
+    <div className="FilterItem">
+        <img src={Sports} alt=""/>
+        <p>Sports</p>
+    </div>
 )
 }
 export default FilterItem;

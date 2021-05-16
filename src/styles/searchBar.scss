@@ -1,0 +1,28 @@
+.searchBar{
+    position: relative;
+    img{
+        width: 25px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    }
+    input{
+        background: #fafaf8;
+        width: 25rem;
+        height: 3rem;
+        border-radius: 1rem;
+        padding: 1rem 2.5rem 1rem 1rem;
+        font-size: 18px;
+        font-family: "Poppins300", sans-serif;
+        &:focus-visible{
+            outline: none;
+        }
+        &:focus{
+            border: 1px solid #f6b64326;
+    box-shadow: 0 0 3px #f6b643;
+        }
+    }
+
+}

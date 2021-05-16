@@ -1,0 +1,18 @@
+.MenuListItem{
+
+    div:first-child{
+        width: calc(63vw / 3);
+        height: 170px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 35px;
+        box-shadow: 0 0 9px #6565650a;
+        margin-right: 1rem;
+    }
+    .itemName{
+        margin: 1rem 0;
+        font-family: 'Poppins500', sans-serif;
+        font-size: 14px;;
+    }
+}

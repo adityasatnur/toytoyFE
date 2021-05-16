@@ -1,10 +1,12 @@
 
 .Header{
     font-family: 'Poppins100', sans-serif;
-    height: 10vh;
+    height: 15vh;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     .hamburger{
+        margin: 1rem;
         div{
         border: 1px solid;
         width: 10px;

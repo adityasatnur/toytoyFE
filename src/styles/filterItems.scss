@@ -1,0 +1,22 @@
+.FilterItem{
+    display: flex;
+    justify-content: start;
+    text-align: center;
+    border: 2px solid #80808017;
+    border-radius: 1rem;
+    padding: 0.2rem 1rem;
+    font-size: 14px;
+    background: #d3d3d314;
+    margin-bottom: 5px;
+    &.selected{
+        border: 1px solid #f6b64326;
+    box-shadow: 0 0 3px #f6b643;
+    background: #f6b64336;
+
+    }
+    img{
+        width: 15px;
+        align-self: center;
+        margin-right: 1rem;
+    }
+}

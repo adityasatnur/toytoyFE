@@ -1,6 +1,7 @@
 .sidebar {
   animation-name: fadeOutLeft;
   transform: translateX(34vw);
+  background: #fff;
   animation-duration: 1s;
   &.sidebar-open{
     display: block;
