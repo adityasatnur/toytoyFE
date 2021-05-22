@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import { Multiselect } from 'multiselect-react-dropdown';
 import '../styles/ItemUpload.scss'
 import axios from "axios";
+import {storage} from ".././firebase/firebase"
+
 import {PORT} from '../serverConfig'
 
 const ItemUpload = ()=>{
@@ -24,6 +26,11 @@ const ItemUpload = ()=>{
     ];
     const [formData, setFormData] = useState({})
     const [categories, setCatgories] = useState([])
+
+    const allInputs = {imgUrl: ''}
+    const [imageAsFile, setImageAsFile] = useState('')
+    const [imageAsUrl, setImageAsUrl] = useState(allInputs)
+
     const onSelect=(a, selectedItem)=>{
         setCatgories([...categories, selectedItem])
     }
@@ -31,7 +38,11 @@ const ItemUpload = ()=>{
         let category = categories.filter((item)=>item.id!==removedItem.id);
         setCatgories(category)
     }
-
+    const handleImageAsFile = (e) => {
+        const image = e.target.files[0]
+        setImageAsFile(imageFile => (image))
+    }
+  
     const inputChange=(e)=>{
         let name = e.target.name;
         let value = e.target.value;
@@ -43,7 +54,7 @@ const ItemUpload = ()=>{
         let data = {
             name: formData.name,
             price: formData.price,
-            image: formData.image,
+            image: imageAsUrl,
             category: categories,
             inventory: formData.inventory,
             type: formData.type,
@@ -61,6 +72,36 @@ const ItemUpload = ()=>{
           })
           
     }
+
+    const handleFireBaseUpload = e => {
+        e.preventDefault()
+      console.log('start of upload')
+      // async magic goes here...
+      if(imageAsFile === '') {
+        console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)
+      }
+      const uploadTask = storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
+      //initiates the firebase side uploading 
+      uploadTask.on('state_changed', 
+      (snapShot) => {
+        //takes a snap shot of the process as it is happening
+        console.log(snapShot)
+      }, (err) => {
+        //catches the errors
+        console.log(err)
+      }, () => {
+        // gets the functions from storage refences the image storage in firebase by the children
+        // gets the download url then sets the image from firebase as the value for the imgUrl key:
+        storage.ref('images').child(imageAsFile.name).getDownloadURL()
+         .then(fireBaseUrl => {
+           setImageAsUrl(prevObject => {
+               ({...prevObject, imgUrl: fireBaseUrl})
+            })
+           
+         })
+      })
+      }
+console.log(imageAsUrl)
 return(
     <div className="ItemUpload">
         <form onSubmit={createItem}>
@@ -74,7 +115,9 @@ return(
             </div>
             <div>
                 <label htmlFor="image">image</label>
-                <input type="file" name="image" id="" onChange={inputChange}/>
+                <input type="file" name="image" id="" onChange={handleImageAsFile}/>
+                <button onClick={handleFireBaseUpload}>Upload</button>
+                {imageAsUrl!==""? <p style={{color:"green"}}> Upload Success</p>:null}
             </div>
             <div>
                 <label htmlFor="category">category</label>
