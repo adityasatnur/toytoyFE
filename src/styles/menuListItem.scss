@@ -1,13 +1,20 @@
 .MenuListItem{
-
+margin-bottom: 1rem;;
+position: relative;
+&.added{
+    button{
+        background:rgb(45 255 20 / 58%);
+        box-shadow: 0 0 9px rgb(45 255 20 / 58%);
+    }
+}
     div:first-child{
         width: calc(63vw / 3);
         height: 170px;
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
-        border-radius: 35px;
-        box-shadow: 0 0 9px #6565650a;
+        border-radius: 35px 35px 0;
+        box-shadow: 0 0 9px #6565651a;
         margin-right: 1rem;
     }
     .itemName{
@@ -15,4 +22,13 @@
         font-family: 'Poppins500', sans-serif;
         font-size: 14px;;
     }
+    button{
+        position: absolute;
+    top: 170px;
+    right: 1rem;
+    padding: 10px 15px;
+    border-radius: 0 0 1rem 1rem;
+    background: #e4e4e473;
+    box-shadow: 0 0 9px #6565651a;
+}
 }

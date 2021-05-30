@@ -3,12 +3,16 @@ import Header from '../components/Header'
 import Sidebar from '../components/Sidebar';
 import Filters from '../components/Filters';
 import Tabs from '../components/Tabs';
-import "../styles/ProductLandingPage.scss"
+import "../styles/ProductLandingPage.scss";
+
 
 const ProductLandingPage = () => {
+    
     const [isSidebarOpen, SetIsSideBarOpen] = useState(false);
     const sidebarRef = useRef();
-
+    const addToCart = (x)=>{
+        console.log(x)
+    }
     useEffect(() => {
         if(!isSidebarOpen){
             setTimeout(()=>{
@@ -28,7 +32,7 @@ return(<>
     <Sidebar isSidebarOpen={isSidebarOpen} sidebarRef={sidebarRef}/>
     <div className="ProductLandingPage">
         <Filters></Filters>
-        <Tabs>
+        <Tabs addToCart={addToCart}>
         </Tabs>
     </div>
     </>

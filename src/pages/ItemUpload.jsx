@@ -26,6 +26,7 @@ const ItemUpload = ()=>{
     ];
     const [formData, setFormData] = useState({})
     const [categories, setCatgories] = useState([])
+    const [itemAdded, setItemAdded] = useState(false);
 
     const allInputs = {imgUrl: ''}
     const [imageAsFile, setImageAsFile] = useState('')
@@ -49,12 +50,17 @@ const ItemUpload = ()=>{
         let form = {...formData, [name]: value}
         setFormData(form)
     }
-    const createItem=async (e)=>{
+    const getItems=async ()=>{
+        await axios.get(`${PORT}/api/get/addItem`).then((res)=>{
+            console.log(res)
+          })
+    }
+        const createItem=async (e)=>{
         e.preventDefault();
         let data = {
             name: formData.name,
             price: formData.price,
-            image: imageAsUrl,
+            image: imageAsUrl.imgUrl,
             category: categories,
             inventory: formData.inventory,
             type: formData.type,
@@ -68,14 +74,19 @@ const ItemUpload = ()=>{
                // 'Content-Type': 'application/plain',
             }
         }).then((res)=>{
-            console.log(res)
+            setItemAdded(()=>{
+
+                setTimeout(()=>{
+                    setItemAdded(false)
+                }, 3000)
+                return true;
+            })
           })
           
     }
 
     const handleFireBaseUpload = e => {
         e.preventDefault()
-      console.log('start of upload')
       // async magic goes here...
       if(imageAsFile === '') {
         console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)
@@ -85,24 +96,22 @@ const ItemUpload = ()=>{
       uploadTask.on('state_changed', 
       (snapShot) => {
         //takes a snap shot of the process as it is happening
-        console.log(snapShot)
       }, (err) => {
         //catches the errors
-        console.log(err)
       }, () => {
         // gets the functions from storage refences the image storage in firebase by the children
         // gets the download url then sets the image from firebase as the value for the imgUrl key:
         storage.ref('images').child(imageAsFile.name).getDownloadURL()
          .then(fireBaseUrl => {
-           setImageAsUrl(prevObject => {
-               ({...prevObject, imgUrl: fireBaseUrl})
-            })
+           setImageAsUrl({...imageAsUrl, imgUrl: fireBaseUrl})
            
          })
       })
       }
 console.log(imageAsUrl)
+
 return(
+
     <div className="ItemUpload">
         <form onSubmit={createItem}>
             <div>
@@ -117,7 +126,7 @@ return(
                 <label htmlFor="image">image</label>
                 <input type="file" name="image" id="" onChange={handleImageAsFile}/>
                 <button onClick={handleFireBaseUpload}>Upload</button>
-                {imageAsUrl!==""? <p style={{color:"green"}}> Upload Success</p>:null}
+                {imageAsUrl.imgUrl!==""? <p style={{color:"green"}}> Upload Success</p>:null}
             </div>
             <div>
                 <label htmlFor="category">category</label>
@@ -164,6 +173,7 @@ return(
                 </select>
             </div>
         <input type="submit" value="Submit"/>
+        {itemAdded && <p style={{color:"green"}}> Item Added Successfully</p>}
         </form>
     </div>
 )

@@ -12,15 +12,16 @@ const App = () => {
     <Router>
       <Link to="/admin">Admin</Link>
       <Switch>
-        <Route path="/PLP">
-          <ProductLandingPage />
-        </Route>
+        <Route path="/admin" exact>
+        
 
-        <Route path="/admin">
           {/* <Home /> */}
           <ItemUpload />
+
         </Route>
-        <Route path="/">{/* <Home /> */}</Route>
+        <Route path="/PLP" exact>
+          <ProductLandingPage />
+        </Route>
       </Switch>
     </Router>
   );
