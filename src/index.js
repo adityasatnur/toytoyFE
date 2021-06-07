@@ -6,24 +6,36 @@ import ItemUpload from './pages/ItemUpload';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import "./index.scss";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
   return (
+    <>
     <Router>
-      <Link to="/admin">Admin</Link>
       <Switch>
         <Route path="/admin" exact>
         
 
-          {/* <Home /> */}
           <ItemUpload />
 
         </Route>
-        <Route path="/PLP" exact>
-          <ProductLandingPage />
-        </Route>
-      </Switch>
-    </Router>
+        </Switch>
+           <HomePage /> 
+        </Router>
+           </>
+    //     <Route path="/PLP" exact>
+    //       <ProductLandingPage />
+    //     </Route>
+    //     <Route path="/PDP" exact>
+    //       <ProductDetailsPage />
+    //     </Route>
+    //     <Route path="/Home" exact>
+    //       <HomePage />
+    //     </Route>
+        
+    //   </Switch>
+    // </Router>
   );
 };
 

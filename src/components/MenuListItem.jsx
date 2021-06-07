@@ -1,18 +1,32 @@
 import React, { useState } from "react";
 import toy from '../assets/images/toy.jpeg';
 import '../styles/menuListItem.scss';
+import { useHistory } from 'react-router-dom'
 
-const MenuListItem = (props) => {
+
+const MenuListItem = ({item, addToCart, showPrices}) => {
+    const history = useHistory();
+
     const [selected, setSelected] = useState(false)
-    const addToCart=()=>{
+    const addToCartClick=()=>{
         setSelected(!selected)
-        props.addToCart("ID")
+        addToCart(item._id)
     }
+    const routeToPDP = ()=>{
+        history.push({
+            pathname: '/PDP',
+            state: { item: item }
+          });
+
+    }
+
 return(
     <div className={`MenuListItem ${selected && "added"}`}>
-        <div style={{backgroundImage: `url(${toy})`}}></div>
-        <div className="itemName">Soft Toy blue</div>
-        <button onClick={addToCart}>{selected ? "Added to Cart": "Add to Cart"}</button>
+        <div style={{backgroundImage: `url(${item.image})`}} onClick={routeToPDP}></div>
+        <div className="itemName">{item.name}</div>
+        {showPrices &&
+        <div className="itemPrice">Amount: {item.price} Rs.</div>}
+        <button onClick={addToCartClick}>{selected ? "Added to Cart": "Add to Cart"}</button>
     </div>
 )
 }

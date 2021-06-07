@@ -1,6 +1,8 @@
 .MenuListItem{
 margin-bottom: 1rem;;
 position: relative;
+flex-basis: calc(100% / 3);
+
 &.added{
     button{
         background:rgb(45 255 20 / 58%);
@@ -15,17 +17,25 @@ position: relative;
         background-repeat: no-repeat;
         border-radius: 35px 35px 0;
         box-shadow: 0 0 9px #6565651a;
-        margin-right: 1rem;
+        &:hover{
+            cursor: pointer;
+        }
     }
     .itemName{
-        margin: 1rem 0;
+        margin: 0.5rem 0 0;
         font-family: 'Poppins500', sans-serif;
         font-size: 14px;;
+    }
+    .itemPrice{
+        margin: 0.0 0 0;
+        font-family: 'Poppins400', sans-serif;
+        font-size: 12px;;
+        opacity: 0.5;
     }
     button{
         position: absolute;
     top: 170px;
-    right: 1rem;
+    right: 8%;
     padding: 10px 15px;
     border-radius: 0 0 1rem 1rem;
     background: #e4e4e473;

@@ -1,4 +1,12 @@
 .ProductLandingPage{
     display: flex;
     margin: 2rem;
+    .noItemsFound{
+        text-align: center;
+    font-family: "Poppins600", sans-serif;
+    font-size: 25px;
+    opacity: 0.5;
+    width: 100%;
+    margin-top: 30vh;
+    }
 }

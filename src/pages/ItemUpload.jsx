@@ -8,21 +8,21 @@ import {PORT} from '../serverConfig'
 
 const ItemUpload = ()=>{
     const category = [
-        {name: 'sports', id: 1},
-        {name: 'Jig Saw Puzzles', id: 2},
-        {name:'pretend Play', id:3},
+        {name: 'Sports', id: 1},
+        {name: 'Jig-Saw Puzzle', id: 2},
+        {name:'Pretend Play', id:3},
         {name: 'Building Blocks', id: 4},
         {name: 'Games for the family', id: 5},
         {name: 'Learn through play', id: 6},
         {name: 'Learning', id: 7},
         {name: 'flash cards', id: 8},
-        {name: 'board books', id: 9},
-        {name: 'fun', id: 10},
-        {name: 'storybook', id: 11},
-        {name: 'activity books', id: 12},
-        {name: 'puppet books', id: 13},
-        {name: 'cloth books', id: 14},
-        {name: 'phonics books', id: 15},
+        {name: 'Board Books', id: 9},
+        {name: 'Fun', id: 10},
+        {name: 'Storybook', id: 11},
+        {name: 'Activity Books', id: 12},
+        {name: 'Puppet Books', id: 13},
+        {name: 'Cloth Books', id: 14},
+        {name: 'Phonics Books', id: 15},
     ];
     const [formData, setFormData] = useState({})
     const [categories, setCatgories] = useState([])
@@ -52,7 +52,6 @@ const ItemUpload = ()=>{
     }
     const getItems=async ()=>{
         await axios.get(`${PORT}/api/get/addItem`).then((res)=>{
-            console.log(res)
           })
     }
         const createItem=async (e)=>{
@@ -67,8 +66,8 @@ const ItemUpload = ()=>{
             purchasable: formData.purchasable,
             description: formData.description,
             ageGroup: formData.ageGroup,
+            toySet: formData.toySet
           }
-          console.log(data)
         await axios.post(`${PORT}/api/addItem`, data, {
             headers: {
                // 'Content-Type': 'application/plain',
@@ -108,7 +107,6 @@ const ItemUpload = ()=>{
          })
       })
       }
-console.log(imageAsUrl)
 
 return(
 
@@ -166,10 +164,18 @@ return(
                 <label htmlFor="ageGroup">Age Group</label>
                 <select name="ageGroup" id="" onChange={inputChange} >
                 <option value={null}> -- select an option -- </option>
-                    <option value="0" >0-2</option>
-                    <option value="2">2-5</option>
-                    <option value="5">5-7</option>
-                    <option value="7">7-99</option>
+                    <option value="0-2" >0-2</option>
+                    <option value="2-5">2-5</option>
+                    <option value="5-7">5-7</option>
+                    <option value="7-99">7-99</option>
+                </select>
+            </div>
+            <div>
+                <label htmlFor="toySet">Toy Set</label>
+                <select name="toySet" id="" onChange={inputChange} >
+                <option value={null}> -- select an option -- </option>
+                    <option value="1 Toy Set" >1 Toy Set</option>
+                    <option value="2 Toy Sets">2 Toy Sets</option>
                 </select>
             </div>
         <input type="submit" value="Submit"/>

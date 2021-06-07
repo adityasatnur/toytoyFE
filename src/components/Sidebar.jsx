@@ -13,20 +13,21 @@ const Sidebar = (props) => {
         <div className="sidebar-header">
           <div className="shoppingBag">
             <img src={shoppingBag}></img>
-            <span>4</span>
+            <span>{props.cartItems.length}</span>
           </div>
           <img src={profilePic} className="userIcon"></img>
           <span className="userName">Satyam Bora</span>
         </div>
+        {props.cartItems.length > 0 ?
+        <>
         <div className="sidebar-order-list">
           <div className="list-title">
             <p>My order</p>
             <img src={editIcon} alt="" />
           </div>
-          <SidebarCartItem></SidebarCartItem>
-          <SidebarCartItem></SidebarCartItem>
-          <SidebarCartItem></SidebarCartItem>
-          <SidebarCartItem></SidebarCartItem>
+          {props.cartItems.map((item)=>{
+              return <SidebarCartItem item={item}></SidebarCartItem>
+          })}
         </div>
         
         <div className="sidebar-total">
@@ -42,7 +43,10 @@ const Sidebar = (props) => {
         </div>
         <div className="sidebar-footer">
           <button>Checkout</button>
-        </div>
+        </div> 
+        </>
+        : 
+        <p className="NoItemFound"> Sorry, No Items Found in the Cart</p>}
       </div>
     </>
   );

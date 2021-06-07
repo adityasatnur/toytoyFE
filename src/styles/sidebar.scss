@@ -5,6 +5,7 @@
   animation-duration: 1s;
   &.sidebar-open{
     display: block;
+    z-index: 3;
     animation-name: fadeInRight;
     animation-duration: 1s;
   animation-direction:normal; 
@@ -110,6 +111,12 @@ padding: 30px;
       }
     }
   }
+  .NoItemFound{
+    font-family: "Poppins400", sans-serif;
+    text-align: center;
+    margin-top: 20vh;
+    opacity: 0.5;
+}
 }
 @keyframes fadeInRight {
   0% {
@@ -130,4 +137,5 @@ padding: 30px;
     opacity: 0;
     transform: translateX(28vw);
  }
+ 
 }

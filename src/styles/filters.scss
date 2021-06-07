@@ -2,10 +2,22 @@
   width: 28vw;
   font-family: "Poppins300", sans-serif;
   font-size: 20px;
+  text-align: center;
+  button{
+    padding: 0.5rem 3rem;
+    background: #ff5722;
+    border: none;
+    border-radius: 1rem;
+    color: #fff;
+    &:hover{
+      cursor: pointer;
+    }
+  }
   .accordion__heading{
       font-size: 15px;
   }
   .accordion__button {
+    text-align: left;
     background: #fafaf8;
     border-radius: 1rem;
     padding: 0.7rem;
