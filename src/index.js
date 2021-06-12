@@ -1,18 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ProductLandingPage from "./pages/ProductLandingPage";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ItemUpload from './pages/ItemUpload';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import "./index.scss";
-import ProductDetailsPage from "./pages/ProductDetailsPage";
 import HomePage from "./pages/HomePage";
 
 const App = () => {
   return (
     <>
     <Router>
+           <HomePage /> 
       <Switch>
         <Route path="/admin" exact>
         
@@ -21,7 +20,6 @@ const App = () => {
 
         </Route>
         </Switch>
-           <HomePage /> 
         </Router>
            </>
     //     <Route path="/PLP" exact>

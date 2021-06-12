@@ -28,8 +28,9 @@ const Header = (props) => {
       </div>
       <SearchBar></SearchBar>
       <div className="sidebar-header">
-        <div className="shoppingBag">
+        <div className="shoppingBag" onClick={props.minibagClick}>
           <img src={shoppingBag}></img>
+          <span>{props.cartItems.length}</span>
         </div>
         <img src={profilePic} className="userIcon"></img>
         <span className="userName">Satyam Bora</span>

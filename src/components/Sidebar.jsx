@@ -18,36 +18,16 @@ const Sidebar = (props) => {
           <img src={profilePic} className="userIcon"></img>
           <span className="userName">Satyam Bora</span>
         </div>
-        {props.cartItems.length > 0 ?
-        <>
-        <div className="sidebar-order-list">
-          <div className="list-title">
-            <p>My order</p>
-            <img src={editIcon} alt="" />
-          </div>
-          {props.cartItems.map((item)=>{
-              return <SidebarCartItem item={item}></SidebarCartItem>
-          })}
+        <div className="Sidebar-NavItems">
+          <div>Home</div>
+          <div>Toys</div>
+          <div>Books</div>
+          <div>Profile</div>
+          <div>Login</div>
         </div>
-        
-        <div className="sidebar-total">
-            <div className="deliveryTruck"> 
-
-            <img src={deliveryTruck} alt=""/>
-            </div>
-            <div>
-                <div>Delivery</div>
-                <span>2-4 Days</span>
-            </div>
-            <div>Free</div>
-        </div>
-        <div className="sidebar-footer">
-          <button>Checkout</button>
-        </div> 
-        </>
-        : 
-        <p className="NoItemFound"> Sorry, No Items Found in the Cart</p>}
       </div>
+        {props.isSidebarOpen?
+        <div className="sidebarBackdrop" onClick={props.closeSidebar}></div>:null}
     </>
   );
 };

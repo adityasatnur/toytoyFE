@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import Minibag from "../components/Minibag";
 import Filters from "../components/Filters";
 import Tabs from "../components/Tabs";
 import "../styles/ProductLandingPage.scss";
@@ -9,12 +10,17 @@ import "../styles/HomePage.scss";
 import { PORT } from "../serverConfig";
 import { useHistory } from "react-router-dom";
 import ProductDetailsPage from "./ProductDetailsPage";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  withRouter,
+} from "react-router-dom";
 
 const HomePage = () => {
   const history = useHistory();
-  console.log(history)
+  console.log(history);
   const [items, setItems] = useState([]);
 
   const [filteredItems, setFilteredItems] = useState([]);
@@ -22,7 +28,9 @@ const HomePage = () => {
 
   const [cartItems, setCartItems] = useState([]);
   const [isSidebarOpen, SetIsSideBarOpen] = useState(false);
+  const [isMinibagOpen, SetIsMinibagOpen] = useState(false);
   const sidebarRef = useRef();
+  const minibagRef = useRef();
   const [filters, setFilters] = useState([]);
 
   const addFilter = (filterName) => {
@@ -87,47 +95,63 @@ const HomePage = () => {
     } else {
       sidebarRef.current.style.display = "block";
     }
-  }, [isSidebarOpen, items]);
+    if (!isMinibagOpen) {
+      setTimeout(() => {
+        minibagRef.current.style.display = "none";
+      }, 800);
+    } else {
+      minibagRef.current.style.display = "block";
+    }
+  }, [isSidebarOpen, isMinibagOpen, items]);
   const hamburgerClick = () => {
     SetIsSideBarOpen(!isSidebarOpen);
   };
+  const minibagClick = () => {
+    SetIsMinibagOpen(!isMinibagOpen);
+  };
   const renderPageData = () => {
     return (
-        <Switch>
-          <Route path="/PLP" exact>
-            <div className="ProductLandingPage">
-              <Filters
-                addFilter={addFilter}
-                removeFilter={removeFilter}
-                applyFiltersHandler={applyFiltersHandler}
-              ></Filters>
-              {items.length === 0 ? (
-                <p className="noItemsFound">Sorry, No items found</p>
-              ) : (
-                <Tabs
-                  addToCart={addToCart}
-                  items={filterApplied ? filteredItems : items}
-                ></Tabs>
-              )}
-            </div>
-          </Route>
-          <Route path="/PDP" exact>
-            <ProductDetailsPage />
-          </Route>
-        </Switch>
+      <Switch>
+        <Route path="/PLP" exact>
+          <div className="ProductLandingPage">
+            <Filters
+              addFilter={addFilter}
+              removeFilter={removeFilter}
+              applyFiltersHandler={applyFiltersHandler}
+            ></Filters>
+            {items.length === 0 ? (
+              <p className="noItemsFound">Sorry, No items found</p>
+            ) : (
+              <Tabs
+                addToCart={addToCart}
+                items={filterApplied ? filteredItems : items}
+              ></Tabs>
+            )}
+          </div>
+        </Route>
+        <Route path="/PDP" exact>
+          <ProductDetailsPage addToCart={addToCart} cartItems={cartItems}/>
+        </Route>
+      </Switch>
     );
   };
-   console.log(history.location.pathname)
   return (
-    <div className={history.location.pathname==="/PDP"?"PDP":""}>
-      <Header isSidebarOpen={isSidebarOpen} hamburgerClick={hamburgerClick} />
+    <div className={history.location.pathname === "/PDP" ? "PDP" : ""}>
+      <Header isSidebarOpen={isSidebarOpen} hamburgerClick={hamburgerClick} minibagClick={minibagClick} cartItems={cartItems}/>
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         sidebarRef={sidebarRef}
         cartItems={cartItems}
+        closeSidebar={hamburgerClick}
+      />
+      <Minibag
+        isMinibagOpen={isMinibagOpen}
+        minibagRef={minibagRef}
+        cartItems={cartItems}
+        closeMinibag={minibagClick}
       />
       {renderPageData()}
     </div>
   );
 };
-export default HomePage;
+export default withRouter(HomePage);

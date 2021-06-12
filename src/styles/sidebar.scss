@@ -117,6 +117,17 @@ padding: 30px;
     margin-top: 20vh;
     opacity: 0.5;
 }
+.Sidebar-NavItems{
+  &>div{
+    &:first-child{
+      margin-top: 10vh;
+    }
+    font-family: "Poppins500", sans-serif;
+    font-size: 25px;
+    margin: 2rem 0;
+    border-bottom: 1px solid #ffc10782;
+  }
+}
 }
 @keyframes fadeInRight {
   0% {
@@ -139,3 +150,12 @@ padding: 30px;
  }
  
 }
+.sidebarBackdrop{
+background: #8a8a8a5c;
+width: 100vw;
+height: 100vh;
+position: absolute;
+top: 0;
+z-index: 2;
+}
+  
