@@ -89,7 +89,7 @@ const HomePage = () => {
     return () => {
       let x = [];
       if (history.location.pathname !== "/PLP") {
-        history.replace({ state: { filteredData: undefined } });
+        history.replace({ state: {...history.location.state, filteredData: undefined } });
       }
     };
   }, [isSidebarOpen, isMinibagOpen, items, history.location.pathname]);
