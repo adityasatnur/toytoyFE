@@ -1,44 +1,67 @@
-.MenuListItem{
-margin-bottom: 1rem;;
-position: relative;
-flex-basis: calc(100% / 3);
-
-&.added{
-    button{
-        background:rgb(45 255 20 / 58%);
-        box-shadow: 0 0 9px rgb(45 255 20 / 58%);
+.MenuListItem {
+  margin-bottom: 1rem;
+  position: relative;
+  flex-basis: calc(100% / 3);
+  @media (max-width: 768px) {
+    flex-basis: calc(100% / 2);
+  }
+  &.added {
+    button {
+      background: rgb(45 255 20 / 58%);
+      box-shadow: 0 0 9px rgb(45 255 20 / 58%);
     }
-}
-    div:first-child{
-        width: calc(63vw / 3);
-        height: 170px;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        border-radius: 35px 35px 0;
-        box-shadow: 0 0 9px #6565651a;
-        &:hover{
-            cursor: pointer;
-        }
+  }
+  div:first-child {
+    width: calc(63vw / 3);
+    @media (max-width: 768px) {
+        width: 90%;
+        height: 160px;
+        margin: 0 auto;
+        border-radius: 15px;
     }
-    .itemName{
-        margin: 0.5rem 0 0;
-        font-family: 'Poppins500', sans-serif;
-        font-size: 14px;;
+    @media (max-width: 500px) {
+        height: 100px;
     }
-    .itemPrice{
-        margin: 0.0 0 0;
-        font-family: 'Poppins400', sans-serif;
-        font-size: 12px;;
-        opacity: 0.5;
+    height: 170px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 35px 35px 0;
+    box-shadow: 0 0 9px #6565651a;
+    &:hover {
+      cursor: pointer;
     }
-    button{
-        position: absolute;
+  }
+  .itemName {
+    margin: 0.5rem 0 0;
+    font-family: "Poppins500", sans-serif;
+    font-size: 14px;
+    @media (max-width: 768px) {
+      font-family: "Poppins400", sans-serif;
+      margin: 0.5rem 5%;
+    }
+  }
+  .itemPrice {
+    margin: 0 0 0;
+    font-family: "Poppins400", sans-serif;
+    font-size: 12px;
+    opacity: 0.5;
+  }
+  button {
+    position: absolute;
     top: 170px;
     right: 8%;
     padding: 10px 15px;
     border-radius: 0 0 1rem 1rem;
     background: #e4e4e473;
     box-shadow: 0 0 9px #6565651a;
-}
+    @media (max-width: 768px) {
+      position: relative;
+      top: 0;
+      right: 0;
+      width: 90%;
+      border-radius: 5px;
+      margin: 0 5%;
+    }
+  }
 }

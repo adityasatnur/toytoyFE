@@ -15,8 +15,8 @@ const Minibag = (props) => {
                 <img src={shoppingBag}></img>
                 <span>{props.cartItems.length}</span>
               </div>
-              <img src={profilePic} className="userIcon"></img>
-              <span className="userName">Satyam Bora</span>
+              <img src={props.currentUser ? props.currentUser.photoURL : profilePic} className="userIcon"></img>
+        <span className="userName">{props.currentUser ? props.currentUser.displayName : "Login/Signup"}</span>
             </div>
             {props.cartItems.length > 0 ?
             <>

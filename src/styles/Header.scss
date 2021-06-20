@@ -1,61 +1,75 @@
+.Header {
+  font-family: "Poppins100", sans-serif;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .hamburger {
+    margin: 1rem;
+    div {
+      border: 1px solid;
+      width: 10px;
+      border-radius: 3px;
+      width: 30px;
+      margin: 5px;
+      transition: all 0.4s;
+    }
 
-.Header{
-    font-family: 'Poppins100', sans-serif;
-    height: 15vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .hamburger{
-        margin: 1rem;
-        div{
-        border: 1px solid;
-        width: 10px;
-        border-radius: 3px;
-        width: 30px;
-        margin: 5px;
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.sidebar-open {
+      div:first-child {
+        transform: rotate(45deg);
+        top: 3px;
+        position: relative;
         transition: all 0.4s;
-
+      }
+      div:last-child {
+        transform: rotate(-45deg);
+        top: -4px;
+        position: relative;
+        transition: all 0.2s;
+      }
+      div:nth-child(2) {
+        display: none;
+        transition: all 0.4s;
+      }
     }
-   &:hover{
-       cursor: pointer;
-   }
-    
-    &.sidebar-open{
-        div:first-child{
-            transform: rotate(45deg);
-            top: 3px;
-            position: relative;
-            transition: all 0.4s;
-        }
-        div:last-child{
-            transform: rotate(-45deg);
-            top: -4px;
-            position: relative;
-            transition: all 0.2s;
-        }
-        div:nth-child(2){
-            display: none;
-            transition: all 0.4s;
-        }
+  }
+  .searchBar,
+    .userName {
+    @media (max-width: 960px) {
+      display: none;
     }
-}
-.logo{
+  }
+  .logo {
     display: flex;
     margin: 0 auto;
     margin-left: 0;
     display: flex;
     align-items: center;
-    &:hover{
-        cursor: pointer;
-    }
-    img{
-        width: 60px;
-    }
-    p{
-    font-family: 'Poppins900', sans-serif;
-    opacity: 0.8;
-    font-size: 25px;
+    @media (max-width: 768px) {
+        transform: scale(.75) translateX(-37px);
+        position: relative;
+        p{
+            display: none;
+        }img{
+            margin-left: 1rem;
+        }
 
+      }
+    &:hover {
+      cursor: pointer;
     }
-}
+    img {
+      width: 60px;
+    }
+    p {
+      font-family: "Poppins900", sans-serif;
+      opacity: 0.8;
+      font-size: 25px;
+    }
+  }
 }

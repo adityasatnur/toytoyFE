@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Minibag from "../components/Minibag";
@@ -8,8 +9,15 @@ import Tabs from "../components/Tabs";
 import "../styles/ProductLandingPage.scss";
 import "../styles/HomePage.scss";
 import { PORT } from "../serverConfig";
-import { useHistory } from "react-router-dom";
 import ProductDetailsPage from "./ProductDetailsPage";
+import LandingPage from "./LandingPage";
+import LoginPopup from "../components/LoginPopup";
+import {
+  auth,
+  signInWithGoogle,
+  signOutFromGoogle,
+} from "../firebase/firebase";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,19 +28,83 @@ import {
 
 const HomePage = () => {
   const history = useHistory();
-  console.log(history);
   const [items, setItems] = useState([]);
-
+  const [currentUser, setCurrentUser] = useState(null);
   const [filteredItems, setFilteredItems] = useState([]);
   const [filterApplied, setFilterApplied] = useState(false);
-
+  const [showLoginModel, setShowLoginModel] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isSidebarOpen, SetIsSideBarOpen] = useState(false);
   const [isMinibagOpen, SetIsMinibagOpen] = useState(false);
+  const [activeLibraryTab, setActiveLibraryTab] = useState(true);
+  const [filters, setFilters] = useState([]);
   const sidebarRef = useRef();
   const minibagRef = useRef();
-  const [filters, setFilters] = useState([]);
 
+  useEffect(() => {
+    if (currentUser === null) {
+      auth.onAuthStateChanged((userAuth) => {
+        setCurrentUser(userAuth);
+      });
+    }
+    if (!items.length && !filters.length) {
+      getItems();
+    }
+    if (
+      history.location.state &&
+      history.location.state.filteredData !== "buyout"
+    ) {
+      if (
+        history.location.pathname === "/PLP" &&
+        history.location.state.filteredData
+      ) {
+        let x = items.filter(
+          (i) => i.type === history.location.state.filteredData
+        );
+        if (items.length > 0 && x.length !== items.length) {
+          setItems(x);
+        }
+      }
+    }
+    if (
+      history.location.state &&
+      history.location.state.filteredData === "buyout"
+    ) {
+      setActiveLibraryTab(false);
+    }
+    if (!isSidebarOpen) {
+      setTimeout(() => {
+        sidebarRef.current.style.display = "none";
+      }, 800);
+    } else {
+      sidebarRef.current.style.display = "block";
+    }
+    if (!isMinibagOpen) {
+      setTimeout(() => {
+        minibagRef.current.style.display = "none";
+      }, 800);
+    } else {
+      minibagRef.current.style.display = "block";
+    }
+    return () => {
+      let x = [];
+      if (history.location.pathname !== "/PLP") {
+        history.replace({ state: { filteredData: undefined } });
+      }
+    };
+  }, [isSidebarOpen, isMinibagOpen, items, history.location.pathname]);
+
+  const signIn = () => {
+    signInWithGoogle();
+    openLoginModel();
+  };
+  const openLoginModel=()=>{
+    setShowLoginModel(!showLoginModel);
+  }
+  const signOut = () => {
+    signOutFromGoogle();
+    openLoginModel();
+  };
   const addFilter = (filterName) => {
     setFilters([...filters, filterName]);
   };
@@ -80,29 +152,31 @@ const HomePage = () => {
   };
   const getItems = async () => {
     await axios.get(`${PORT}/api/get/addItem`).then((res) => {
-      const arr = [...items, ...res.data];
+      let arr = [...items, ...res.data];
       setItems(arr);
     });
   };
-  useEffect(() => {
-    if (!items.length && !filters.length) {
-      getItems();
+  const navigateTo = (page) => {
+    switch (page) {
+      case "toy":
+      case "book":
+        history.push({
+          pathname: "/PLP",
+          state: { filteredData: page },
+        });
+        break;
+      case "home":
+        history.push({ pathname: "/" });
+        break;
+      case "profile":
+        history.push({ pathname: "/profile" });
+        break;
+      case "login":
+        history.push({ pathname: "/login" });
+        break;
     }
-    if (!isSidebarOpen) {
-      setTimeout(() => {
-        sidebarRef.current.style.display = "none";
-      }, 800);
-    } else {
-      sidebarRef.current.style.display = "block";
-    }
-    if (!isMinibagOpen) {
-      setTimeout(() => {
-        minibagRef.current.style.display = "none";
-      }, 800);
-    } else {
-      minibagRef.current.style.display = "block";
-    }
-  }, [isSidebarOpen, isMinibagOpen, items]);
+    SetIsSideBarOpen(!isSidebarOpen);
+  };
   const hamburgerClick = () => {
     SetIsSideBarOpen(!isSidebarOpen);
   };
@@ -125,31 +199,56 @@ const HomePage = () => {
               <Tabs
                 addToCart={addToCart}
                 items={filterApplied ? filteredItems : items}
+                activetab={activeLibraryTab}
               ></Tabs>
             )}
           </div>
         </Route>
         <Route path="/PDP" exact>
-          <ProductDetailsPage addToCart={addToCart} cartItems={cartItems}/>
+          <ProductDetailsPage addToCart={addToCart} cartItems={cartItems} />
+        </Route>
+        <Route path="/" exact>
+          <LandingPage />
         </Route>
       </Switch>
     );
   };
   return (
     <div className={history.location.pathname === "/PDP" ? "PDP" : ""}>
-      <Header isSidebarOpen={isSidebarOpen} hamburgerClick={hamburgerClick} minibagClick={minibagClick} cartItems={cartItems}/>
+      <Header
+        isSidebarOpen={isSidebarOpen}
+        hamburgerClick={hamburgerClick}
+        minibagClick={minibagClick}
+        cartItems={cartItems}
+        currentUser={currentUser}
+        openLoginModel={openLoginModel}
+      />
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         sidebarRef={sidebarRef}
         cartItems={cartItems}
         closeSidebar={hamburgerClick}
+        navigateTo={navigateTo}
+        currentUser={currentUser}
+        openLoginModel={openLoginModel}
+
       />
       <Minibag
         isMinibagOpen={isMinibagOpen}
         minibagRef={minibagRef}
         cartItems={cartItems}
         closeMinibag={minibagClick}
+        currentUser={currentUser}
+        openLoginModel={openLoginModel}
+
       />
+      {showLoginModel ? (
+        <LoginPopup
+          currentUser={currentUser}
+          signIn={signIn}
+          signOut={signOut}
+        />
+      ) : null}
       {renderPageData()}
     </div>
   );

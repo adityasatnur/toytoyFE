@@ -3,6 +3,9 @@
   font-family: "Poppins300", sans-serif;
   font-size: 20px;
   text-align: center;
+  @media (max-width: 768px) {
+    display: none;
+  }
   button{
     padding: 0.5rem 3rem;
     background: #ff5722;

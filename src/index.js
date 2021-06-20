@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ItemUpload from './pages/ItemUpload';
@@ -7,7 +7,10 @@ import "regenerator-runtime/runtime";
 import "./index.scss";
 import HomePage from "./pages/HomePage";
 
+
+
 const App = () => {
+ 
   return (
     <>
     <Router>

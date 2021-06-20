@@ -21,17 +21,24 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.s[ac]ss$/i,
-                exclude: /node_modules/,
-                use: [
-                  // Creates `style` nodes from JS strings
-                  "style-loader",
-                  // Translates CSS into CommonJS
-                  "css-loader",
-                  // Compiles Sass to CSS
-                  "sass-loader",
+                test: /\.(s[ac]ss|css)$/i,
+                include: [
+                  path.resolve(__dirname, "src"),
+                  path.resolve(__dirname, "node_modules/slick-carousel/slick")
                 ],
+                use: [
+                  {
+                    loader: 'style-loader'
+                  },
+                  {
+                    loader: 'css-loader'
+                  },
+                  {
+                    loader: 'sass-loader'
+                  }
+                ]
               },
+              
             {
                 test: /\.(png|jpe?g|gif)$/,
                 use:[

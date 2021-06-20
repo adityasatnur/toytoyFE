@@ -1,10 +1,7 @@
 import React, {useRef} from "react";
-import SidebarCartItem from './SidebarCartItem';
 import "../styles/sidebar.scss";
 import shoppingBag from "../assets/icons/shoppingBag.png";
 import profilePic from "../assets/icons/maleIcon.jpeg";
-import editIcon from "../assets/icons/edit.svg";
-import deliveryTruck from "../assets/icons/delivery-truck.png";
 
 const Sidebar = (props) => {
   return (
@@ -15,15 +12,15 @@ const Sidebar = (props) => {
             <img src={shoppingBag}></img>
             <span>{props.cartItems.length}</span>
           </div>
-          <img src={profilePic} className="userIcon"></img>
-          <span className="userName">Satyam Bora</span>
+          <img src={props.currentUser ? props.currentUser.photoURL : profilePic} className="userIcon" onClick={props.openLoginModel}></img>
+        <span className="userName"  onClick={props.openLoginModel}>{props.currentUser ? props.currentUser.displayName : "Login/Signup"}</span>
         </div>
         <div className="Sidebar-NavItems">
-          <div>Home</div>
-          <div>Toys</div>
-          <div>Books</div>
-          <div>Profile</div>
-          <div>Login</div>
+          <div onClick={()=>props.navigateTo('home')}>Home</div>
+          <div onClick={()=>props.navigateTo('toy')}>Toys</div>
+          <div onClick={()=>props.navigateTo('book')}>Books</div>
+          <div onClick={()=>props.navigateTo('Profie')}>Profile</div>
+          <div onClick={props.openLoginModel}>{props.currentUser ? "Logout" : "Login"}</div>
         </div>
       </div>
         {props.isSidebarOpen?

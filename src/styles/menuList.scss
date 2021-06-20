@@ -5,11 +5,29 @@
     font-size: 20px;
     margin-bottom: 0.5rem;
   }
+  select{
+    float: right;
+    padding: 1rem;
+    width: 10rem;
+    background: #ff5722;
+    border-radius: 0.7rem;
+    border: 1px solid #ff0000b8;
+    box-shadow: 0 0 5px #ff0000b8;
+    color: #fff;
+    font-size: 20px;
+    font-family: "Poppins300", sans-serif;
+    margin-bottom: 1rem;
+  }
   & > div {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     width: 69vw;
     margin-left: 3vw;
+    @media (max-width:768px) {
+      margin-left: 0;
+    width: 100%;
+      
+    }
   }
 }

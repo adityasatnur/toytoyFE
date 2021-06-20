@@ -1,6 +1,10 @@
 .ProductLandingPage{
     display: flex;
     margin: 2rem;
+    @media (max-width:768px) {
+        margin: 1rem;
+        
+    }
     .noItemsFound{
         text-align: center;
     font-family: "Poppins600", sans-serif;

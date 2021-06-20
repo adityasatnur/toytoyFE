@@ -12,6 +12,10 @@ const Tabs = (props)=>{
     }
     useEffect(() => {
         let buyout = props.items.filter(item=> item.purchasable === true);
+        if(!props.activetab){
+            scrollTo(0,0)
+            setActiveTab("Buyout")
+        }
         if(buyoutItems.length === 0){
             setBuyoutItems([...buyoutItems, ...buyout])
         }

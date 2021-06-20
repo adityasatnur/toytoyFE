@@ -120,7 +120,7 @@ return(
                 </AccordionItemHeading>
                 <AccordionItemPanel>
                 {toyCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
-                <button onClick={()=>applyFiltersHandler('toys')}>Apply Filters</button>
+                <button onClick={()=>applyFiltersHandler('category')}>Apply Filters</button>
                 </AccordionItemPanel>
             </AccordionItem>
             <AccordionItem>
