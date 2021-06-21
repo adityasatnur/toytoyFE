@@ -89,7 +89,9 @@ const HomePage = () => {
     return () => {
       let x = [];
       if (history.location.pathname !== "/PLP") {
-        history.replace({ state: {...history.location.state, filteredData: undefined } });
+        history.replace({
+          state: { ...history.location.state, filteredData: undefined },
+        });
       }
     };
   }, [isSidebarOpen, isMinibagOpen, items, history.location.pathname]);
@@ -98,9 +100,9 @@ const HomePage = () => {
     signInWithGoogle();
     openLoginModel();
   };
-  const openLoginModel=()=>{
+  const openLoginModel = () => {
     setShowLoginModel(!showLoginModel);
-  }
+  };
   const signOut = () => {
     signOutFromGoogle();
     openLoginModel();
@@ -112,31 +114,49 @@ const HomePage = () => {
     let newFilter = filters.filter((item) => filterName !== item);
     setFilters([...newFilter]);
   };
-  const applyFiltersHandler = (filterType) => {
+  const applyFiltersHandler = () => {
     setFilterApplied(true);
-    let filteredItems = [];
-    items.filter((item) => {
-      if (filterType === "toys") {
-        loop1: for (let i = 0; i < item.category.length; i++) {
-          for (let j = 0; j < filters.length; j++) {
-            if (item.category[i].name === filters[j]) {
-              filteredItems.push(item);
-              break loop1;
-            }
+    let filteredItemsLocal = [];
+    if (filters.length > 0) {
+      items.filter((item) => {
+        // if (filterType !== "toySet") {
+        //   loop1: for (let i = 0; i < item[filterType].length; i++) {
+        //     for (let j = 0; j < filters.length; j++) {
+        //       if (item[filterType][i].name === filters[j]) {
+        //         filteredItemsLocal.push(item);
+        //         break loop1;
+        //       }
+        //     }
+        //   }
+        // } else {
+        //   for (let j = 0; j < filters.length; j++) {
+        //     if (item[filterType] === filters[j]) {
+        //       filteredItemsLocal.push(item);
+        //     }
+        //   }
+        // }
+        // item.categories.find(el=>el.)
+        filters.forEach(el=>{
+          let x = item.category.find(i=>i.name===el)
+          let y = item.ageGroup.find(i=>i.name===el)
+          if(x || y){
+            filteredItemsLocal.push(item);
           }
-        }
-      } else {
-        for (let j = 0; j < filters.length; j++) {
-          if (item[filterType] === filters[j]) {
-            filteredItems.push(item);
-          }
-        }
-      }
-    });
-    if (filteredItems.length === 0) {
+        })
+        
+      });
+    } else {
+      filteredItemsLocal = [...items];
+    }
+    if (filteredItemsLocal.length === 0) {
+
       setFilteredItems(new Array());
     } else {
-      setFilteredItems(filteredItems);
+      // const filteredItemsLocalUnique = Array.from(new Set(filteredItemsLocal.map(a => a._id)))
+      //         .map(id => {
+      //           return filteredItemsLocal.find(a => a._id === id)
+      //         })
+      setFilteredItems(filteredItemsLocal);
     }
   };
   const addToCart = (id) => {
@@ -193,7 +213,7 @@ const HomePage = () => {
               removeFilter={removeFilter}
               applyFiltersHandler={applyFiltersHandler}
             ></Filters>
-            {items.length === 0 ? (
+            {(items.length === 0 || (filterApplied && filteredItems.length===0)) ? (
               <p className="noItemsFound">Sorry, No items found</p>
             ) : (
               <Tabs
@@ -231,7 +251,6 @@ const HomePage = () => {
         navigateTo={navigateTo}
         currentUser={currentUser}
         openLoginModel={openLoginModel}
-
       />
       <Minibag
         isMinibagOpen={isMinibagOpen}
@@ -240,7 +259,6 @@ const HomePage = () => {
         closeMinibag={minibagClick}
         currentUser={currentUser}
         openLoginModel={openLoginModel}
-
       />
       {showLoginModel ? (
         <LoginPopup

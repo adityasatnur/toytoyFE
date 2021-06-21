@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useHistory } from "react-router-dom";
 import "../styles/landingPage.scss";
 import HowitWorksDesktop from "../assets/images/howitworksdesktop.jpg";
@@ -8,6 +8,7 @@ import iconNext from "../assets/icons/next.svg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+let pinCodes = ["411004", "411035", "411046", "411003", "411051", "411007", "411027", "411002", "411045", "411007", "411021", "411042", "411026", "411039", "411038", "411037", "411020", "411001", "411031", "411019", "411033", "411005", "411012", "411004", "411043", "411015", "411041", "411015", "411001", "411014", "411003", "411038", "411004", "411007", "411042", "411016", "411028", "411016", "411042", "411003", "411028 ", "411013", "411032", "411026", "411057", "411033", "411017", "411002", "411052", "411034", "411011", "411046", "411003", "411048", "411030", "411019", "411011", "411018", "411016", "411060", "411036", "411048", "411008", "411045", "411001", "411002", "411041", "411030", "411052", "411018", "411044", "411009", "411061", "411017", "411018 ", "411033", "411001", "411002 ", "411020 ", "411030", "411011", "411002", "411030", "411005", "411027", "411028", "411030", "411016", "411005", "411023", "411002", "411041", "411022", "411021", "411042", "411014", "411014", "411015", "411057", "411058", "411040" ,"411044", "411006"]
 
 function NextArrow(props) {
   const { className, onClick } = props;
@@ -53,13 +54,27 @@ const LandingPage = () => {
     ],
   };
   const history = useHistory();
-
+  const [pin, setPin] = useState(null)
+  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [isDeliverable, setIsDeliverable] = useState(null)
   const navigateToPlp = (filt) => {
     history.push({
       pathname: "/PLP",
       state: { filteredData: filt },
     });
   };
+  const pinCodeChecker=(e)=>{
+    e.preventDefault();
+    setFormSubmitted(true)
+    if(pin.length===6 && pinCodes.find(el => el===pin)){
+      setIsDeliverable(true)
+    }else(
+      setIsDeliverable(false)
+    )
+  }
+  const pinType= (e)=>{
+    setPin(e.target.value)
+  }
   return (
     <div className="LandingPage">
       <div className="brandBanner">
@@ -75,15 +90,19 @@ const LandingPage = () => {
           <p>
             Excited?? Check your <b>pincode</b> for eligibilty:{" "}
           </p>
-          <form action="">
-            <input type="text" maxLength="6" />
+          <form action="" onSubmit={pinCodeChecker}>
+            <input type="text" maxLength="6" onChange={pinType} maxLength={6}/>
             <input type="submit" value="Search" />
           </form>
+          {formSubmitted ?
+          isDeliverable ? 
           <p className="congrats">Congrats, you are Eligible.</p>
+          :
           <p className="sorry">
             Sorry, we dont deliver to your area.
             <br /> We'll be serving your region soon.
           </p>
+          : null}
         </div>
         <div className="illustrator1"></div>
       </div>

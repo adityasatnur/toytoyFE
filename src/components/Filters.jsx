@@ -120,7 +120,7 @@ return(
                 </AccordionItemHeading>
                 <AccordionItemPanel>
                 {toyCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
-                <button onClick={()=>applyFiltersHandler('category')}>Apply Filters</button>
+                <button onClick={applyFiltersHandler}>Apply Filters</button>
                 </AccordionItemPanel>
             </AccordionItem>
             <AccordionItem>
@@ -131,7 +131,7 @@ return(
                 </AccordionItemHeading>
                 <AccordionItemPanel>
                 {ageGroupsFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
-                <button  onClick={()=>applyFiltersHandler('ageGroup')}>Apply Filters</button>
+                <button  onClick={applyFiltersHandler}>Apply Filters</button>
 
                 </AccordionItemPanel>
             </AccordionItem>
@@ -143,7 +143,7 @@ return(
                 </AccordionItemHeading>
                 <AccordionItemPanel>
                 {productSetFilter.map(item=><FilterItem item={item} addFilter={addFilter}removeFilter={removeFilter}></FilterItem>)}
-                <button  onClick={()=>applyFiltersHandler('toySet')}>Apply Filters</button>
+                <button  onClick={applyFiltersHandler}>Apply Filters</button>
 
                 </AccordionItemPanel>
             </AccordionItem>

@@ -24,8 +24,16 @@ const ItemUpload = ()=>{
         {name: 'Cloth Books', id: 14},
         {name: 'Phonics Books', id: 15},
     ];
+    const ageTypes = [
+        {name: '0-2', id: 1},
+        {name: '2-5', id: 2},
+        {name:'5-7', id:3},
+        {name: '7-99', id: 4},
+        
+    ];
     const [formData, setFormData] = useState({})
     const [categories, setCatgories] = useState([])
+    const [age, setAge] = useState([])
     const [itemAdded, setItemAdded] = useState(false);
 
     const allInputs = {imgUrl: ''}
@@ -38,6 +46,13 @@ const ItemUpload = ()=>{
     const onRemove=(a, removedItem)=>{
         let category = categories.filter((item)=>item.id!==removedItem.id);
         setCatgories(category)
+    }
+    const onSelectAge=(a, selectedItem)=>{
+        setAge([...age, selectedItem])
+    }
+    const onRemoveAge=(a, removedItem)=>{
+        let category = age.filter((item)=>item.id!==removedItem.id);
+        setAge(category)
     }
     const handleImageAsFile = (e) => {
         const image = e.target.files[0]
@@ -65,7 +80,7 @@ const ItemUpload = ()=>{
             type: formData.type,
             purchasable: formData.purchasable,
             description: formData.description,
-            ageGroup: formData.ageGroup,
+            ageGroup: age,
             toySet: formData.toySet
           }
         await axios.post(`${PORT}/api/addItem`, data, {
@@ -162,13 +177,13 @@ return(
             </div>
             <div>
                 <label htmlFor="ageGroup">Age Group</label>
-                <select name="ageGroup" id="" onChange={inputChange} >
-                <option value={null}> -- select an option -- </option>
-                    <option value="0-2" >0-2</option>
-                    <option value="2-5">2-5</option>
-                    <option value="5-7">5-7</option>
-                    <option value="7-99">7-99</option>
-                </select>
+                <Multiselect
+                options={ageTypes} // Options to display in the dropdown
+                onSelect={onSelectAge} // Function will trigger on select event
+                onRemove={onRemoveAge} // Function will trigger on remove event
+                displayValue="name" // Property name to display in the dropdown options
+                />
+                
             </div>
             <div>
                 <label htmlFor="toySet">Toy Set</label>
