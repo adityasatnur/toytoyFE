@@ -1,13 +1,49 @@
-import React, {useRef} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import SidebarCartItem from './SidebarCartItem';
 import "../styles/sidebar.scss";
 import shoppingBag from "../assets/icons/shoppingBag.png";
 import profilePic from "../assets/icons/maleIcon.jpeg";
 import editIcon from "../assets/icons/edit.svg";
 import deliveryTruck from "../assets/icons/delivery-truck.png";
+import sigma from "../assets/icons/sigma.png";
+import { useHistory } from 'react-router-dom'
 
 const Minibag = (props) => {
-    return (
+    const history = useHistory();
+
+const [minibagTotal, setMinibagTotal]=useState(0)
+useEffect(() => {
+  let total = 0
+  props.cartItems.forEach(item=>{
+    (typeof(item.cost) === "number") && (total += item.cost)
+    
+  })
+  setMinibagTotal(total)
+  
+}, [props.cartItems])
+
+const goToCheckout= ()=>{
+  if(!props.currentUser){
+    props.openLoginModel()
+  }
+  if(props.userData.userPlanType!== "0"){
+
+  
+    history.push({
+        pathname: '/checkout',
+        state: { items: props.cartItems }
+      });
+    }else{
+      props.closeMinibag();
+      debugger;
+      history.push({
+        pathname: '/home',
+        state :{fromPlans:true}
+      });
+    }
+
+}
+  return (
         <>
           <div className={`sidebar ${props.isMinibagOpen && "sidebar-open"}`} ref={props.minibagRef}>
             <div className="sidebar-header">
@@ -26,10 +62,20 @@ const Minibag = (props) => {
                 <img src={editIcon} alt="" />
               </div>
               {props.cartItems.map((item)=>{
+                  // setMinibagTotal(minibagTotal + item.cost)
                   return <SidebarCartItem item={item}></SidebarCartItem>
               })}
             </div>
-            
+            <div className="sidebar-total">
+                <div  className="deliveryTruck">
+                <img src={sigma} alt=""/>
+                   </div>
+                <div>
+                    <div>Total</div>
+                    <div></div>
+                </div>
+                <div>{minibagTotal}</div>
+            </div>
             <div className="sidebar-total">
                 <div className="deliveryTruck"> 
     
@@ -42,7 +88,7 @@ const Minibag = (props) => {
                 <div>Free</div>
             </div>
             <div className="sidebar-footer">
-              <button>Checkout</button>
+              <button onClick={goToCheckout}>Checkout</button>
             </div> 
             </>
             : 

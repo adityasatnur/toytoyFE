@@ -1,0 +1,60 @@
+.Footer{
+    background: #fffbe6;
+    display: flex;
+    justify-content: space-around;
+    padding: 3rem;
+    @media (max-width:786px) {
+        flex-direction: column;
+    }
+    &1{
+    display: block;
+    font-family: "Poppins300", sans-serif;
+        opacity: 0.8;
+        font-size: 0.8rem;
+    }
+    .logo {
+        display: flex;
+        margin: 0 auto;
+        margin-left: 0;
+        display: flex;
+        align-items: center;
+        @media (max-width:786px) {
+            justify-content: center;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+        img {
+          width: 60px;
+        }
+        p {
+          font-family: "Poppins900", sans-serif;
+          opacity: 0.8;
+          font-size: 25px;
+        }
+      }
+      .heading{
+          font-family: "Poppins500", sans-serif;
+          margin: 0.5rem 0;
+      }
+      &>div div{
+        font-family: "Poppins300", sans-serif;
+        font-size: 14px;
+        &:hover{
+          cursor: pointer;
+          color: crimson;
+        }
+      }
+      .social{
+          display: flex;
+          div{
+              img{
+                  width: 2rem;
+                  margin-right:1rem ;
+                  &:hover{
+                      cursor: pointer;
+                  }
+              }
+          }
+      }
+}

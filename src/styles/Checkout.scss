@@ -1,0 +1,39 @@
+.Checkout {
+  display: flex;
+  margin: 3rem auto;
+  width: 80%;
+  &>div{
+    flex: 0 1 60%;
+  }
+  &.deliveryDetails{
+    flex: 1 0 40%;
+    padding-left: 1rem;
+    border-left: 1px solid #e5e5e5;
+  }
+  .itemDetails {
+    display: flex;
+    margin-bottom: 1rem;
+    .itemImage {
+      img {
+        border: 1px solid #d4d4d4;
+        border-radius: 0.7rem;
+        width: 6rem;
+      }
+    }
+    .itemData {
+      font-family: "Poppins400", sans-serif;
+      margin: 1rem;
+      button {
+        border: none;
+        background: #fff;
+        border: 1px solid red;
+        color: red;
+        padding: 5px 10px;
+        border-radius: 5px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

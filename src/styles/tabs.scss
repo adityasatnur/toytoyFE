@@ -3,6 +3,10 @@
   margin-left: 3vw;
   margin-bottom: 1rem;
   border-bottom: 3px solid #ffed4f;
+  position: sticky;
+    top: 0;
+    z-index: 300;
+    background: #fff;
   & > div {
     flex-basis: 50%;
     text-align: center;

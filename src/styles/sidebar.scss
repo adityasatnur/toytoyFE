@@ -5,7 +5,7 @@
   animation-duration: 1s;
   &.sidebar-open {
     display: block;
-    z-index: 3;
+    z-index: 302;
     animation-name: fadeInRight;
     animation-duration: 1s;
     animation-direction: normal;
@@ -166,5 +166,5 @@
   height: 100vh;
   position: absolute;
   top: 0;
-  z-index: 2;
+  z-index: 301;
 }

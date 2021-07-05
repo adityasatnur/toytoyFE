@@ -14,8 +14,11 @@ return(<>
             <option selected={true} value="Books">Book</option>
         </select>
         <div>
-            {props.items.map((item)=>
-            <MenuListItem addToCart={props.addToCart} item={item} key={item._id} showPrices={props.showPrices}></MenuListItem>
+            {props.items.map((item)=>{
+            if(item.inventory > 0){
+            return <MenuListItem addToCart={props.addToCart} item={item} key={item._id} showPrices={props.showPrices}></MenuListItem>
+            }
+        }
             )}
         </div>
     </div>

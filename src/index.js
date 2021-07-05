@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { createBrowserHistory } from "history";
+
 import ItemUpload from './pages/ItemUpload';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -10,10 +12,11 @@ import HomePage from "./pages/HomePage";
 
 
 const App = () => {
- 
+  const history = createBrowserHistory();
+
   return (
     <>
-    <Router>
+    <Router history={history}>
            <HomePage /> 
       <Switch>
         <Route path="/admin" exact>

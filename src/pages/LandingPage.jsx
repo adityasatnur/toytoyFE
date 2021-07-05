@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import "../styles/landingPage.scss";
 import HowitWorksDesktop from "../assets/images/howitworksdesktop.jpg";
@@ -8,6 +8,7 @@ import iconNext from "../assets/icons/next.svg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import itemModel from "../../../toytoyBE/itemModel";
 let pinCodes = ["411004", "411035", "411046", "411003", "411051", "411007", "411027", "411002", "411045", "411007", "411021", "411042", "411026", "411039", "411038", "411037", "411020", "411001", "411031", "411019", "411033", "411005", "411012", "411004", "411043", "411015", "411041", "411015", "411001", "411014", "411003", "411038", "411004", "411007", "411042", "411016", "411028", "411016", "411042", "411003", "411028 ", "411013", "411032", "411026", "411057", "411033", "411017", "411002", "411052", "411034", "411011", "411046", "411003", "411048", "411030", "411019", "411011", "411018", "411016", "411060", "411036", "411048", "411008", "411045", "411001", "411002", "411041", "411030", "411052", "411018", "411044", "411009", "411061", "411017", "411018 ", "411033", "411001", "411002 ", "411020 ", "411030", "411011", "411002", "411030", "411005", "411027", "411028", "411030", "411016", "411005", "411023", "411002", "411041", "411022", "411021", "411042", "411014", "411014", "411015", "411057", "411058", "411040" ,"411044", "411006"]
 
 function NextArrow(props) {
@@ -28,7 +29,7 @@ function PrevArrow(props) {
   );
 }
 
-const LandingPage = () => {
+const LandingPage = (props) => {
   const settings = {
     dots: false,
     arrows: true,
@@ -57,6 +58,16 @@ const LandingPage = () => {
   const [pin, setPin] = useState(null)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isDeliverable, setIsDeliverable] = useState(null)
+  const plans = useRef(null);
+  const executeScroll = () => plans.current.scrollIntoView(); 
+useEffect(() => {
+  if(history.location.state && history.location.state.fromPlans){
+    history.push({
+      state:{fromPlans:false}
+    })
+    executeScroll()
+  }
+}, [history.location.state])
   const navigateToPlp = (filt) => {
     history.push({
       pathname: "/PLP",
@@ -71,6 +82,38 @@ const LandingPage = () => {
     }else(
       setIsDeliverable(false)
     )
+  }
+  const goToCheckout=(plan)=>{
+    let itemData = {}
+    switch(plan){
+      case "Plan1":
+        itemData = {name:"Seed Plan 1 Month Expiry",
+        cost: 1500,
+        image: "",
+        _id:"Plan1"
+      }
+      break;
+      case "Plan2":
+        itemData = {name:"Blossom Plan 2 Month Expiry",
+        cost: 2400,
+        image: "",
+        _id:"Plan2"
+
+      }
+      break;
+      case "Plan3":
+        itemData = {name:"Garden Plan 3 Month Expiry",
+        cost: 2700,
+        image: "",
+        _id:"Plan3"
+
+      }
+      break;
+    }
+    history.push({
+      pathname:'/checkout',
+      state:{plans:itemData}
+    })
   }
   const pinType= (e)=>{
     setPin(e.target.value)
@@ -109,67 +152,20 @@ const LandingPage = () => {
       <div className="homepageCarousel">
         <div className="header">Popular Toys</div>
         <Slider {...settings}>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
+          {props.items.map((item) => {
+            item.popular && item.type==="toy" &&  <div>
+              <div className="carousel-product">
+                <div>
+                  <div
+                    style={{ backgroundImage: `url(${item.image})` }}
+                  ></div>
+                  <p>{item.name}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-        </Slider>
+          })
+        }
+         </Slider>
       </div>
       <div className="howItWorks">
         <p>How it works!</p>
@@ -181,66 +177,19 @@ const LandingPage = () => {
       <div className="homepageCarousel">
         <div className="header">Popular Books</div>
         <Slider {...settings}>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
+        {props.items.map((item) => {
+            item.popular && item.type==="book" &&  <div>
+              <div className="carousel-product">
+                <div>
+                  <div
+                    style={{ backgroundImage: `url(${item.image})` }}
+                  ></div>
+                  <p>{item.name}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="carousel-product">
-              <div>
-                <div
-                  style={{ backgroundImage: `url(${HowitWorksMobile})` }}
-                ></div>
-                <p>lorem ipsum</p>
-              </div>
-            </div>
-          </div>
+          })
+        }
         </Slider>
       </div>
       <div className="infoBanners toys">
@@ -294,6 +243,39 @@ const LandingPage = () => {
 
         <div></div>
         {/* <img src={} alt=""/> */}
+      </div>
+   
+      <div className="pricing" ref={plans}>
+      <p>Our Plans</p>
+<div>
+
+            <div className="pricing-item">
+              <img src={HowitWorksDesktop} alt=""/>
+            <h3>Seed</h3>
+            <p>Duration: 1 Month</p>
+            <p>Price: 500/-</p>
+            <p>Deposit: 1000/-</p>
+            <button onClick={()=>goToCheckout("Plan1")}>Buy Now</button>
+            </div>
+            <div className="pricing-item">
+            <img src={HowitWorksDesktop} alt=""/>
+            <h3>Grow</h3>
+            <p>Duration: 3 Month</p>
+            <p>Price: 1400</p>
+            <p>Deposit: 1000</p>
+            <button onClick={()=>goToCheckout("Plan2")}>Buy Now</button>
+
+            </div>
+            <div className="pricing-item">
+            <img src={HowitWorksDesktop} alt=""/>
+            <h3>Blossom</h3>
+            <p>Duration: 6 Month</p>
+            <p>Price: 2700</p>
+            <p>No Deposit</p>
+            <button onClick={()=>goToCheckout("Plan3")}>Buy Now</button>
+            </div>
+</div>
+
       </div>
     </div>
   );

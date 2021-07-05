@@ -25,7 +25,7 @@ return(
         <div style={{backgroundImage: `url(${item.image})`}} onClick={routeToPDP}></div>
         <div className="itemName">{item.name}</div>
         {showPrices &&
-        <div className="itemPrice">Amount: {item.price} Rs.</div>}
+        <div className="itemPrice">Amount: {item.cost} Rs.</div>}
         <button onClick={addToCartClick}>{selected ? "Added to Cart": "Add to Cart"}</button>
     </div>
 )

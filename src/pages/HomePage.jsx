@@ -10,8 +10,19 @@ import "../styles/ProductLandingPage.scss";
 import "../styles/HomePage.scss";
 import { PORT } from "../serverConfig";
 import ProductDetailsPage from "./ProductDetailsPage";
+import Profile from "./Profile";
 import LandingPage from "./LandingPage";
+import DeliveriesPage from "./DeliveriesPage";
+import Checkout from "./Checkout";
 import LoginPopup from "../components/LoginPopup";
+import Footer from "../components/Footer";
+import AboutUs from './AboutUs'
+import ContactUs from './ContactUs'
+import CancellationPolicy from './CancellationPolicy'
+import PrivacyPolicy from './PrivacyPolicy'
+import TermsConditions from './TermsConditions'
+import ReturnRefund from './ReturnRefund'
+
 import {
   auth,
   signInWithGoogle,
@@ -30,6 +41,7 @@ const HomePage = () => {
   const history = useHistory();
   const [items, setItems] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [filteredItems, setFilteredItems] = useState([]);
   const [filterApplied, setFilterApplied] = useState(false);
   const [showLoginModel, setShowLoginModel] = useState(false);
@@ -76,14 +88,21 @@ const HomePage = () => {
       setTimeout(() => {
         sidebarRef.current.style.display = "none";
       }, 800);
+      document.getElementsByTagName('body')[0].style.overflow = "visible"
+
     } else {
+      document.getElementsByTagName('body')[0].style.overflow = "hidden"
       sidebarRef.current.style.display = "block";
+      
     }
     if (!isMinibagOpen) {
       setTimeout(() => {
         minibagRef.current.style.display = "none";
       }, 800);
+      document.getElementsByTagName('body')[0].style.overflow = "visible"
+
     } else {
+      document.getElementsByTagName('body')[0].style.overflow = "hidden"
       minibagRef.current.style.display = "block";
     }
     return () => {
@@ -96,6 +115,28 @@ const HomePage = () => {
     };
   }, [isSidebarOpen, isMinibagOpen, items, history.location.pathname]);
 
+  useEffect(() => {
+    if (currentUser) {
+      updateOrCreateUser();
+    }
+  }, [currentUser]);
+
+  const updateOrCreateUser = async () => {
+    let data = {
+      userName: currentUser.displayName,
+      userEmail: currentUser.email,
+    };
+    await axios
+      .post(`${PORT}/api/updateOrCreateUser`, data, {
+        headers: {
+          // 'Content-Type': 'application/plain',
+        },
+      })
+      .then((res) => {
+        setUserData(res.data);
+      });
+  };
+console.log(userData)
   const signIn = () => {
     signInWithGoogle();
     openLoginModel();
@@ -117,45 +158,27 @@ const HomePage = () => {
   const applyFiltersHandler = () => {
     setFilterApplied(true);
     let filteredItemsLocal = [];
+    debugger;
     if (filters.length > 0) {
       items.filter((item) => {
-        // if (filterType !== "toySet") {
-        //   loop1: for (let i = 0; i < item[filterType].length; i++) {
-        //     for (let j = 0; j < filters.length; j++) {
-        //       if (item[filterType][i].name === filters[j]) {
-        //         filteredItemsLocal.push(item);
-        //         break loop1;
-        //       }
-        //     }
-        //   }
-        // } else {
-        //   for (let j = 0; j < filters.length; j++) {
-        //     if (item[filterType] === filters[j]) {
-        //       filteredItemsLocal.push(item);
-        //     }
-        //   }
-        // }
-        // item.categories.find(el=>el.)
-        filters.forEach(el=>{
-          let x = item.category.find(i=>i.name===el)
-          let y = item.ageGroup.find(i=>i.name===el)
-          if(x || y){
+        filters.forEach((el) => {
+          let x = item.category.find((i) => i.name === el);
+          let y = item.ageGroup.find((i) => i.name === el);
+          let z = false;
+          if(item.toySet === el){
+            z = true;
+          }
+          if (x || y || z) {
             filteredItemsLocal.push(item);
           }
-        })
-        
+        });
       });
     } else {
       filteredItemsLocal = [...items];
     }
     if (filteredItemsLocal.length === 0) {
-
       setFilteredItems(new Array());
     } else {
-      // const filteredItemsLocalUnique = Array.from(new Set(filteredItemsLocal.map(a => a._id)))
-      //         .map(id => {
-      //           return filteredItemsLocal.find(a => a._id === id)
-      //         })
       setFilteredItems(filteredItemsLocal);
     }
   };
@@ -164,10 +187,18 @@ const HomePage = () => {
     let findDuplicateInCart = cartItems.find((item) => item._id === id);
     if (findDuplicateInCart === undefined) {
       let newArr = itemCopy.filter((item) => item._id === id);
-      setCartItems([...cartItems, ...newArr]);
+      let i = [...cartItems, ...newArr]
+      setCartItems(i);
+      history.push({
+        state: { items: i }
+      });
     } else {
       let newArr = cartItems.filter((item) => item._id !== id);
-      setCartItems([...newArr]);
+      let i = [...newArr]
+      setCartItems(i);
+      history.push({
+        state: { items: i }
+      });
     }
   };
   const getItems = async () => {
@@ -180,22 +211,50 @@ const HomePage = () => {
     switch (page) {
       case "toy":
       case "book":
-        history.push({
-          pathname: "/PLP",
-          state: { filteredData: page },
-        });
+        if (history.location.pathname !== "/PLP" || history.location.state.filteredData) {
+          history.push({
+            pathname: "/PLP",
+            state: { filteredData: page },
+          });
+        }
         break;
       case "home":
-        history.push({ pathname: "/" });
+        if (history.location.pathname !== "/") {
+          history.push({ pathname: "/" });
+        }
         break;
       case "profile":
-        history.push({ pathname: "/profile" });
+        if (history.location.pathname !== "/profile") {
+          history.push({ pathname: "/profile" });
+        }
         break;
-      case "login":
-        history.push({ pathname: "/login" });
+        case "PLP":
+        history.push({ pathname: "/PLP" });
+        break;
+    
+      case "aboutus":
+        history.push({ pathname: "/aboutus" });
+        break;
+        case "contactus":
+        history.push({ pathname: "/contactus" });
+        break;
+        case "privacy":
+        history.push({ pathname: "/privacy" });
+        break;
+        case "terms":
+        history.push({ pathname: "/terms" });
+        break;
+        case "returnrefund":
+        history.push({ pathname: "/returnrefund" });
+        break;
+        case "cancellation":
+        history.push({ pathname: "/cancellation" });
+        break;
+        case "checkout":
+        history.push({ pathname: "/checkout" });
         break;
     }
-    SetIsSideBarOpen(!isSidebarOpen);
+    SetIsSideBarOpen(false);
   };
   const hamburgerClick = () => {
     SetIsSideBarOpen(!isSidebarOpen);
@@ -213,7 +272,8 @@ const HomePage = () => {
               removeFilter={removeFilter}
               applyFiltersHandler={applyFiltersHandler}
             ></Filters>
-            {(items.length === 0 || (filterApplied && filteredItems.length===0)) ? (
+            {items.length === 0 ||
+            (filterApplied && filteredItems.length === 0) ? (
               <p className="noItemsFound">Sorry, No items found</p>
             ) : (
               <Tabs
@@ -227,8 +287,39 @@ const HomePage = () => {
         <Route path="/PDP" exact>
           <ProductDetailsPage addToCart={addToCart} cartItems={cartItems} />
         </Route>
-        <Route path="/" exact>
-          <LandingPage />
+        <Route path="/Profile" exact>
+          {userData ? (
+            <Profile userData={userData} />
+          ) : (
+            <p>Please login to continue</p>
+          )}
+        </Route>
+        <Route path="/deliveries" exact>
+          <DeliveriesPage />
+        </Route> 
+        <Route path="/checkout"  exact>
+          <Checkout addToCart={addToCart}/>
+        </Route>
+        <Route path="/aboutus" exact>
+          <AboutUs />
+        </Route>
+        <Route path="/contactus" exact>
+          <ContactUs />
+        </Route>
+        <Route path="/privacy" exact>
+          <PrivacyPolicy />
+        </Route>
+        <Route path="/terms" exact>
+          <TermsConditions />
+        </Route>
+        <Route path="/returnrefund" exact>
+          <ReturnRefund />
+        </Route>
+        <Route path="/cancellation" exact>
+          <CancellationPolicy />
+        </Route>
+        <Route path="/">
+          <LandingPage items={items} addToCart={addToCart}/>
         </Route>
       </Switch>
     );
@@ -240,6 +331,7 @@ const HomePage = () => {
         hamburgerClick={hamburgerClick}
         minibagClick={minibagClick}
         cartItems={cartItems}
+        navigateTo={navigateTo}
         currentUser={currentUser}
         openLoginModel={openLoginModel}
       />
@@ -259,6 +351,7 @@ const HomePage = () => {
         closeMinibag={minibagClick}
         currentUser={currentUser}
         openLoginModel={openLoginModel}
+        userData={userData}
       />
       {showLoginModel ? (
         <LoginPopup
@@ -268,6 +361,9 @@ const HomePage = () => {
         />
       ) : null}
       {renderPageData()}
+
+        
+      <Footer navigateTo={navigateTo}></Footer>
     </div>
   );
 };

@@ -73,12 +73,13 @@ const ItemUpload = ()=>{
         e.preventDefault();
         let data = {
             name: formData.name,
-            price: formData.price,
+            cost: formData.cost,
             image: imageAsUrl.imgUrl,
             category: categories,
             inventory: formData.inventory,
             type: formData.type,
             purchasable: formData.purchasable,
+            popular: formData.popular,
             description: formData.description,
             ageGroup: age,
             toySet: formData.toySet
@@ -91,8 +92,9 @@ const ItemUpload = ()=>{
             setItemAdded(()=>{
 
                 setTimeout(()=>{
-                    setItemAdded(false)
-                }, 3000)
+                    setItemAdded(false);
+                    window.location.reload();
+                }, 1000)
                 return true;
             })
           })
@@ -175,6 +177,11 @@ return(
                     <option value={false}>No</option>
                 </select>
             </div>
+            {formData.purchasable?
+            <div>
+                <label htmlFor="cost">cost</label>
+                <input type="number" name="cost" id="" onChange={inputChange}/>
+            </div>:null}
             <div>
                 <label htmlFor="ageGroup">Age Group</label>
                 <Multiselect
@@ -191,6 +198,14 @@ return(
                 <option value={null}> -- select an option -- </option>
                     <option value="1 Toy Set" >1 Toy Set</option>
                     <option value="2 Toy Sets">2 Toy Sets</option>
+                </select>
+            </div>
+            <div>
+                <label htmlFor="popular">Is Popular</label>
+                <select name="popular" id="" onChange={inputChange} >
+                <option value={null}> -- select an option -- </option>
+                    <option value={true} >yes</option>
+                    <option value={false}>No</option>
                 </select>
             </div>
         <input type="submit" value="Submit"/>

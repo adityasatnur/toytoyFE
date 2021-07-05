@@ -1,5 +1,5 @@
 .MenuListItem {
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
   position: relative;
   flex-basis: calc(100% / 3);
   @media (max-width: 768px) {
@@ -13,18 +13,18 @@
   }
   div:first-child {
     width: calc(63vw / 3);
+    border: 1px solid #d4d4d4;
     @media (max-width: 768px) {
         width: 90%;
-        height: 160px;
         margin: 0 auto;
         border-radius: 15px;
     }
     @media (max-width: 500px) {
-        height: 100px;
+        height: 180px;
     }
-    height: 170px;
+    height: 300px;
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     border-radius: 35px 35px 0;
     box-shadow: 0 0 9px #6565651a;
@@ -35,7 +35,8 @@
   .itemName {
     margin: 0.5rem 0 0;
     font-family: "Poppins500", sans-serif;
-    font-size: 14px;
+    font-size: 12px;
+    width: calc( 100% - 115px);
     @media (max-width: 768px) {
       font-family: "Poppins400", sans-serif;
       margin: 0.5rem 5%;
@@ -49,7 +50,7 @@
   }
   button {
     position: absolute;
-    top: 170px;
+    top: 300px;
     right: 8%;
     padding: 10px 15px;
     border-radius: 0 0 1rem 1rem;

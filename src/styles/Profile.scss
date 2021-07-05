@@ -1,0 +1,35 @@
+.Profile{
+    margin: 0 2rem 8rem;
+    .row{
+        display: flex;
+        width: 70%;
+        font-size: 1rem;
+        font-family: "Poppins400", sans-serif;
+        margin: 1rem auto 0;
+        label, P:first-child{
+            flex-basis: 50%;
+            align-self: center;
+            .star{
+                color: red;
+            }
+        }
+        input{
+            border-radius: 0.5rem;
+            flex-basis: 50%;
+            font-family: "Poppins400", sans-serif;
+            padding: 5px 1rem;
+            font-size: 16px;
+            border: 1px solid #d4d4d4;
+        }
+    }
+    input[type='submit']{
+        background: #ff9800;
+        border: navajowhite;
+        padding: 1rem 2rem;
+        color: #fff;
+        font-size: 16px;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

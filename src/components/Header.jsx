@@ -16,7 +16,7 @@ const Header = (props) => {
         <div></div>
         <div></div>
       </div>
-      <div className="logo">
+      <div className="logo" onClick={()=>props.navigateTo('home')}>
         <p>The</p>
         <img
           src={
@@ -26,7 +26,7 @@ const Header = (props) => {
         />
         <p>Library</p>
       </div>
-      <SearchBar></SearchBar>
+      {/* <SearchBar></SearchBar> */}
       <div className="sidebar-header">
         <div className="shoppingBag" onClick={props.minibagClick}>
           <img src={shoppingBag}></img>

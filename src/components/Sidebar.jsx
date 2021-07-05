@@ -19,7 +19,8 @@ const Sidebar = (props) => {
           <div onClick={()=>props.navigateTo('home')}>Home</div>
           <div onClick={()=>props.navigateTo('toy')}>Toys</div>
           <div onClick={()=>props.navigateTo('book')}>Books</div>
-          <div onClick={()=>props.navigateTo('Profie')}>Profile</div>
+          <div onClick={()=>props.navigateTo('PLP')}>All Products</div>
+          <div onClick={()=>props.navigateTo('profile')}>Profile</div>
           <div onClick={props.openLoginModel}>{props.currentUser ? "Logout" : "Login"}</div>
         </div>
       </div>
