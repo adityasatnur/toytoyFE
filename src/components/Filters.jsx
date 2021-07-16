@@ -10,13 +10,28 @@ import {
 } from 'react-accessible-accordion';
 import FilterItem from './FilterItem';
 import Sports from "../assets/icons/sports.png";
-import Sports1 from "../assets/icons/activity-book.png";
-import Sports2 from "../assets/icons/board-bookks.png";
-import Sports3 from "../assets/icons/cloth-book.png";
-import Sports4 from "../assets/icons/delivery-truck.png";
-import Sports5 from "../assets/icons/fun.png";
-import Sports6 from "../assets/icons/learning.png";
-import Sports7 from "../assets/icons/search.png";
+import activityBook from "../assets/icons/activity-book.png";
+import boardBooks from "../assets/icons/board-bookks.png";
+import clothBooks from "../assets/icons/cloth-book.png";
+import deliveryTruck from "../assets/icons/delivery-truck.png";
+import fun from "../assets/icons/fun.png";
+import learning from "../assets/icons/learning.png";
+import search from "../assets/icons/search.png";
+import jigSawPuzzle from "../assets/icons/jig-saw-puzzle.png";
+import learnThroughPlay from "../assets/icons/learn-through-to-play.png";
+import phonicsBook from "../assets/icons/phonics-book.png";
+import pretendPlay from "../assets/icons/pretend-play.png";
+import puppetBook from "../assets/icons/puppet-book.png";
+import storyBook from "../assets/icons/Story-book.png";
+import gamesWithFamily from "../assets/icons/games-with-family.png";
+import flashCard from "../assets/icons/Flash-Card.png";
+import buildingBlocks from "../assets/icons/building-blocks.png";
+import set1 from "../assets/icons/1set.png";
+import set2 from "../assets/icons/2set.png";
+import age1 from "../assets/icons/0-2.png";
+import age2 from "../assets/icons/2-5.png";
+import age3 from "../assets/icons/5-7.png";
+import age4 from "../assets/icons/7-99.png";
 
 const toyCategoriesFilter = [
     {
@@ -25,84 +40,84 @@ const toyCategoriesFilter = [
 },
 {
     categoryName:"Jig-Saw Puzzle", 
-    categoryImage: Sports
+    categoryImage: jigSawPuzzle
 },
 {
     categoryName:"Pretend Play", 
-    categoryImage: Sports
+    categoryImage: pretendPlay
 },
 {
     categoryName:"Building Blocks", 
-    categoryImage: Sports
+    categoryImage: buildingBlocks
 },
 {
     categoryName:"Games for the family", 
-    categoryImage: Sports
+    categoryImage: gamesWithFamily
 },{
     categoryName:"Learn through play", 
-    categoryImage: Sports
+    categoryImage: learnThroughPlay
 },{
     categoryName:"Learning", 
-    categoryImage: Sports
+    categoryImage: learning
 },{
     categoryName:"Flash Cards", 
-    categoryImage: Sports
+    categoryImage: flashCard
 },{
     categoryName:"Fun", 
-    categoryImage: Sports
+    categoryImage: fun
 }
 ]
 const bookCategoriesFilter = [
     {
         categoryName:"Storybook", 
-        categoryImage: Sports
+        categoryImage: storyBook
     },
     {
         categoryName:"Board Books", 
-        categoryImage: Sports
+        categoryImage: boardBooks
     },
     {
         categoryName:"Activity Books", 
-        categoryImage: Sports
+        categoryImage: activityBook
     },
     {
         categoryName:"Puppet Books", 
-        categoryImage: Sports
+        categoryImage: puppetBook
     },
     {
         categoryName:"Cloth Books", 
-        categoryImage: Sports
+        categoryImage: clothBooks
     },{
         categoryName:"Phonics Books", 
-        categoryImage: Sports
+        categoryImage: phonicsBook
     },
 ]
 const ageGroupsFilter = [
     {
         categoryName:"0-2", 
-        categoryImage: Sports
+        categoryImage: age1
     },
     {
         categoryName:"2-5", 
-        categoryImage: Sports
+        categoryImage: age2
     },
     {
         categoryName:"5-7", 
-        categoryImage: Sports
+        categoryImage: age3
     },
     {
         categoryName:"7-99", 
-        categoryImage: Sports
+        categoryImage: age4
     }
 ]
 const productSetFilter = [
     {
         categoryName:"1 Toy Set", 
-        categoryImage: Sports
+        categoryImage: set1
     },
     {
         categoryName:"2 Toy Sets", 
-        categoryImage: Sports
+        categoryImage: set2
     },
     
 ]
@@ -111,15 +126,26 @@ const Filters = ({addFilter, removeFilter, applyFiltersHandler}) => {
 return(
     <div className="Filters">Filters
     
-        <Accordion>
+        <Accordion allowZeroExpanded={true}>
             <AccordionItem>
                 <AccordionItemHeading>
                     <AccordionItemButton>
-                        Categories
+                        Toys Categories
                     </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
                 {toyCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
+                <button onClick={applyFiltersHandler}>Apply Filters</button>
+                </AccordionItemPanel>
+            </AccordionItem>
+            <AccordionItem>
+                <AccordionItemHeading>
+                    <AccordionItemButton>
+                        Books Categories
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                {bookCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
                 <button onClick={applyFiltersHandler}>Apply Filters</button>
                 </AccordionItemPanel>
             </AccordionItem>

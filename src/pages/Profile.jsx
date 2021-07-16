@@ -28,7 +28,6 @@ const Profile = ({ userData }) => {
         ? formData.referredBy
         : userData.ReferredBy,
     };
-    debugger;
     await axios
       .post(`${PORT}/api/updateUserData`, data, {
         headers: {

@@ -8,12 +8,12 @@ const ProductDetailsPage = (props) => {
   const [addedToCart, setAdeedToCart] = useState(false)
   const addToCart = ()=>{
     props.addToCart(itemData._id);
-      
   }
 
 const {cartItems} = props;
     useEffect(() => {
          let a = false;
+        scrollTo(0,0);
          cartItems.forEach(cartItem=>{
             if(cartItem._id===itemData._id){
                 a = true;
@@ -21,7 +21,6 @@ const {cartItems} = props;
           })
         a ? setAdeedToCart(true) :setAdeedToCart(false)
     }, [cartItems])
- 
   return (
     <div className="ProductDetailsPage">
         <div className="ProductDetailsPage-imageBox">

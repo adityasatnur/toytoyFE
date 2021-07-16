@@ -54,6 +54,7 @@ const HomePage = () => {
   const minibagRef = useRef();
 
   useEffect(() => {
+
     if (currentUser === null) {
       auth.onAuthStateChanged((userAuth) => {
         setCurrentUser(userAuth);
@@ -74,7 +75,8 @@ const HomePage = () => {
           (i) => i.type === history.location.state.filteredData
         );
         if (items.length > 0 && x.length !== items.length) {
-          setItems(x);
+          setFilterApplied(true);
+          setFilteredItems(x);
         }
       }
     }
@@ -83,6 +85,8 @@ const HomePage = () => {
       history.location.state.filteredData === "buyout"
     ) {
       setActiveLibraryTab(false);
+      setFilterApplied(false);
+
     }
     if (!isSidebarOpen) {
       setTimeout(() => {
@@ -136,7 +140,6 @@ const HomePage = () => {
         setUserData(res.data);
       });
   };
-console.log(userData)
   const signIn = () => {
     signInWithGoogle();
     openLoginModel();
@@ -158,7 +161,6 @@ console.log(userData)
   const applyFiltersHandler = () => {
     setFilterApplied(true);
     let filteredItemsLocal = [];
-    debugger;
     if (filters.length > 0) {
       items.filter((item) => {
         filters.forEach((el) => {
@@ -190,7 +192,7 @@ console.log(userData)
       let i = [...cartItems, ...newArr]
       setCartItems(i);
       history.push({
-        state: { items: i }
+        state: {...history.location.state, items: i }
       });
     } else {
       let newArr = cartItems.filter((item) => item._id !== id);
@@ -211,7 +213,8 @@ console.log(userData)
     switch (page) {
       case "toy":
       case "book":
-        if (history.location.pathname !== "/PLP" || history.location.state.filteredData) {
+        setFilterApplied(true);
+        if (history.location.pathname !== "/PLP" || (history.location.state && history.location.state.filteredData)) {
           history.push({
             pathname: "/PLP",
             state: { filteredData: page },
@@ -229,6 +232,7 @@ console.log(userData)
         }
         break;
         case "PLP":
+          setFilterApplied(false);
         history.push({ pathname: "/PLP" });
         break;
     

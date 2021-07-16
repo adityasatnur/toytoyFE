@@ -35,7 +35,6 @@ const goToCheckout= ()=>{
       });
     }else{
       props.closeMinibag();
-      debugger;
       history.push({
         pathname: '/home',
         state :{fromPlans:true}

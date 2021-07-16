@@ -195,7 +195,7 @@ const LandingPage = (props) => {
         itemData = {
           name: "Seed Plan 1 Month Expiry",
           cost: 1500,
-          image: "",
+          image: Seed,
           _id: "Plan1",
         };
         break;
@@ -203,7 +203,7 @@ const LandingPage = (props) => {
         itemData = {
           name: "Blossom Plan 2 Month Expiry",
           cost: 2400,
-          image: "",
+          image: Blossom,
           _id: "Plan2",
         };
         break;
@@ -211,7 +211,7 @@ const LandingPage = (props) => {
         itemData = {
           name: "Garden Plan 3 Month Expiry",
           cost: 2700,
-          image: "",
+          image: Garden,
           _id: "Plan3",
         };
         break;
@@ -359,7 +359,7 @@ const LandingPage = (props) => {
           <div className="pricing-item">
             <img src={Seed} alt="" />
             <h3>Seed</h3>
-            <p>Duration: 1 Month</p>
+            <p>Duration: <span className="highlight">1</span> Month</p>
             <p>
               Price: <span className="highlight">500</span>
             </p>
