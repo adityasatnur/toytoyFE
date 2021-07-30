@@ -26,18 +26,28 @@ const goToCheckout= ()=>{
   if(!props.currentUser){
     props.openLoginModel()
   }
-  if(props.userData.userPlanType!== "0"){
+  let nonPurchasable = true;
+  debugger;
+  props.cartItems.every(item=>{
+    if(!item.purchasable){
+      nonPurchasable = false
+      return false
+    }
+    
+  })
+  if(props.userData.userPlanType!== "0" || nonPurchasable){
 
   
     history.push({
         pathname: '/checkout',
-        state: { items: props.cartItems }
+        state: { items: props.cartItems, cartTotal: minibagTotal }
       });
     }else{
       props.closeMinibag();
+      debugger;
       history.push({
         pathname: '/home',
-        state :{fromPlans:true}
+        state :{items: props.cartItems, fromPlans:true}
       });
     }
 

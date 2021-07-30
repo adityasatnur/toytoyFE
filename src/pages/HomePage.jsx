@@ -22,6 +22,9 @@ import CancellationPolicy from './CancellationPolicy'
 import PrivacyPolicy from './PrivacyPolicy'
 import TermsConditions from './TermsConditions'
 import ReturnRefund from './ReturnRefund'
+import PaymentStatus from '../components/PaymentStatus'
+import Loader from '../components/Loader'
+
 
 import {
   auth,
@@ -40,6 +43,7 @@ import {
 const HomePage = () => {
   const history = useHistory();
   const [items, setItems] = useState([]);
+  const [showLoader, setShowLoader] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -61,6 +65,7 @@ const HomePage = () => {
       });
     }
     if (!items.length && !filters.length) {
+      setShowLoader(true)
       getItems();
     }
     if (
@@ -199,7 +204,7 @@ const HomePage = () => {
       let i = [...newArr]
       setCartItems(i);
       history.push({
-        state: { items: i }
+        state: {...history.location.state, items: i }
       });
     }
   };
@@ -207,6 +212,8 @@ const HomePage = () => {
     await axios.get(`${PORT}/api/get/addItem`).then((res) => {
       let arr = [...items, ...res.data];
       setItems(arr);
+        setShowLoader(false)
+
     });
   };
   const navigateTo = (page) => {
@@ -302,7 +309,8 @@ const HomePage = () => {
           <DeliveriesPage />
         </Route> 
         <Route path="/checkout"  exact>
-          <Checkout addToCart={addToCart}/>
+        
+          <Checkout addToCart={addToCart} userData={userData}/>
         </Route>
         <Route path="/aboutus" exact>
           <AboutUs />
@@ -322,6 +330,9 @@ const HomePage = () => {
         <Route path="/cancellation" exact>
           <CancellationPolicy />
         </Route>
+        <Route exact path="/status/:orderId" component={PaymentStatus} />
+        <Route exact path="/Loader" component={Loader} />
+
         <Route path="/">
           <LandingPage items={items} addToCart={addToCart}/>
         </Route>
@@ -329,7 +340,9 @@ const HomePage = () => {
     );
   };
   return (
-    <div className={history.location.pathname === "/PDP" ? "PDP" : ""}>
+    <>
+    {showLoader ? <Loader/> : null}
+    <div className={(history.location.pathname === "/PDP" ? "PDP" : "" || showLoader ? 'noner' : "")}>
       <Header
         isSidebarOpen={isSidebarOpen}
         hamburgerClick={hamburgerClick}
@@ -369,6 +382,7 @@ const HomePage = () => {
         
       <Footer navigateTo={navigateTo}></Footer>
     </div>
+      </>
   );
 };
 export default withRouter(HomePage);

@@ -148,11 +148,17 @@ const LandingPage = (props) => {
     prevArrow: <PrevArrow />,
     responsive: [
       {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 3,
+        },
+      },{
         breakpoint: 768,
         settings: {
           slidesToShow: 2,
         },
       },
+
       {
         breakpoint: 550,
         settings: {
@@ -167,20 +173,36 @@ const LandingPage = (props) => {
   const [isDeliverable, setIsDeliverable] = useState(null);
   const plans = useRef(null);
   const executeScroll = () => plans.current.scrollIntoView();
+  const [popularToys, setPopularToys]=useState([]);
+  const [popularBooks, setPopularBooks]=useState([]);
   useEffect(() => {
     if (history.location.state && history.location.state.fromPlans) {
       history.push({
-        state: { fromPlans: false },
+        state: { ...history.location.state, fromPlans: false },
       });
       executeScroll();
     }
-  }, [history.location.state]);
+    if(props.items){
+      let books = props.items.filter(item=> (item.popular === true && item.type==="book"))
+      setPopularBooks(books)
+      let toys = props.items.filter(item=> (item.popular === true && item.type==="toy"))
+      setPopularToys(toys)
+    }
+
+  }, [history.location.state, props.items]);
   const navigateToPlp = (filt) => {
     history.push({
       pathname: "/PLP",
       state: { filteredData: filt },
     });
   };
+  const routeToPDP = (item)=>{
+    history.push({
+        pathname: '/PDP',
+        state: { item: item }
+      });
+
+}
   const pinCodeChecker = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
@@ -216,9 +238,10 @@ const LandingPage = (props) => {
         };
         break;
     }
+    debugger;
     history.push({
       pathname: "/checkout",
-      state: { plans: itemData },
+      state: { ...history.location.state, plans: itemData },
     });
   };
   const pinType = (e) => {
@@ -258,11 +281,12 @@ const LandingPage = (props) => {
       </div>
       <div className="homepageCarousel">
         <div className="header">Popular Toys</div>
+        {popularToys && popularToys.length &&
         <Slider {...settings}>
-          {props.items.map((item) => {
-            item.popular && item.type === "toy" && (
+           {popularToys.map((item) => {
+            return (
               <div>
-                <div className="carousel-product">
+                <div className="carousel-product" onClick={()=>routeToPDP(item)}>
                   <div>
                     <div
                       style={{ backgroundImage: `url(${item.image})` }}
@@ -274,6 +298,7 @@ const LandingPage = (props) => {
             );
           })}
         </Slider>
+}
       </div>
       <div className="howItWorks">
         <p>How it works!</p>
@@ -284,11 +309,12 @@ const LandingPage = (props) => {
       </div>
       <div className="homepageCarousel">
         <div className="header">Popular Books</div>
+        {popularBooks && popularBooks.length &&
         <Slider {...settings}>
-          {props.items.map((item) => {
-            item.popular && item.type === "book" && (
+          { popularBooks.map((item) => {
+            return (
               <div>
-                <div className="carousel-product">
+                <div className="carousel-product" onClick={()=>routeToPDP(item)}>
                   <div>
                     <div
                       style={{ backgroundImage: `url(${item.image})` }}
@@ -299,7 +325,7 @@ const LandingPage = (props) => {
               </div>
             );
           })}
-        </Slider>
+        </Slider>}
       </div>
       <div className="infoBanners toys">
         <div>

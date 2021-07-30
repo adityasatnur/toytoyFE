@@ -134,7 +134,7 @@ return(
                     </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                {toyCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
+                {toyCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter} key={item._id}></FilterItem>)}
                 <button onClick={applyFiltersHandler}>Apply Filters</button>
                 </AccordionItemPanel>
             </AccordionItem>
@@ -145,7 +145,7 @@ return(
                     </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                {bookCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
+                {bookCategoriesFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}  key={item._id}></FilterItem>)}
                 <button onClick={applyFiltersHandler}>Apply Filters</button>
                 </AccordionItemPanel>
             </AccordionItem>
@@ -156,7 +156,7 @@ return(
                     </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                {ageGroupsFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}></FilterItem>)}
+                {ageGroupsFilter.map(item=><FilterItem item={item} addFilter={addFilter} removeFilter={removeFilter}  key={item._id}></FilterItem>)}
                 <button  onClick={applyFiltersHandler}>Apply Filters</button>
 
                 </AccordionItemPanel>
@@ -168,7 +168,7 @@ return(
                     </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                {productSetFilter.map(item=><FilterItem item={item} addFilter={addFilter}removeFilter={removeFilter}></FilterItem>)}
+                {productSetFilter.map(item=><FilterItem item={item} addFilter={addFilter}removeFilter={removeFilter}  key={item._id}></FilterItem>)}
                 <button  onClick={applyFiltersHandler}>Apply Filters</button>
 
                 </AccordionItemPanel>
