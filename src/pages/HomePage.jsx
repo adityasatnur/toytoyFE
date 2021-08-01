@@ -68,6 +68,10 @@ const HomePage = () => {
       setShowLoader(true)
       getItems();
     }
+    let sessionCartItems = JSON.parse(localStorage.getItem('cartItems'));
+    if(sessionCartItems && sessionCartItems!=='[]'){
+      setCartItems(sessionCartItems);
+    }
     if (
       history.location.state &&
       history.location.state.filteredData !== "buyout"
@@ -196,16 +200,12 @@ const HomePage = () => {
       let newArr = itemCopy.filter((item) => item._id === id);
       let i = [...cartItems, ...newArr]
       setCartItems(i);
-      history.push({
-        state: {...history.location.state, items: i }
-      });
+      localStorage.setItem('cartItems', JSON.stringify(i));
     } else {
       let newArr = cartItems.filter((item) => item._id !== id);
       let i = [...newArr]
       setCartItems(i);
-      history.push({
-        state: {...history.location.state, items: i }
-      });
+      localStorage.setItem('cartItems', JSON.stringify(i));
     }
   };
   const getItems = async () => {

@@ -223,7 +223,7 @@ const LandingPage = (props) => {
         break;
       case "Plan2":
         itemData = {
-          name: "Blossom Plan 2 Month Expiry",
+          name: "Blossom Plan 3 Month Expiry",
           cost: 2400,
           image: Blossom,
           _id: "Plan2",
@@ -231,7 +231,7 @@ const LandingPage = (props) => {
         break;
       case "Plan3":
         itemData = {
-          name: "Garden Plan 3 Month Expiry",
+          name: "Garden Plan 6 Month Expiry",
           cost: 2700,
           image: Garden,
           _id: "Plan3",
@@ -239,9 +239,9 @@ const LandingPage = (props) => {
         break;
     }
     debugger;
+    localStorage.setItem('plans', JSON.stringify(itemData))
     history.push({
       pathname: "/checkout",
-      state: { ...history.location.state, plans: itemData },
     });
   };
   const pinType = (e) => {

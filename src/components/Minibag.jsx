@@ -36,18 +36,15 @@ const goToCheckout= ()=>{
     
   })
   if(props.userData.userPlanType!== "0" || nonPurchasable){
-
-  
     history.push({
         pathname: '/checkout',
-        state: { items: props.cartItems, cartTotal: minibagTotal }
       });
     }else{
       props.closeMinibag();
       debugger;
       history.push({
         pathname: '/home',
-        state :{items: props.cartItems, fromPlans:true}
+        state :{fromPlans:true}
       });
     }
 

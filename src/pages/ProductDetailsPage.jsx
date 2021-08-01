@@ -29,7 +29,12 @@ const {cartItems} = props;
         </div>
       <div className="ProductDetailsPage-rightBox">
           <div className="item-name">{itemData.name}</div>
+          <div className="item-toySet">Age Groups :  
             {/* <div className="item-type">{itemData.type}</div> */}
+            {itemData.ageGroup.map((age, index)=>{
+              return <span className="item-toySet"> {age.name}{(itemData.ageGroup.length-1) !== index ? ", ": null}</span>
+            })}
+            </div>
             <div className="item-toySet">{itemData.toySet}</div>
             <div className="item-description">{itemData.itemDescription}</div>
             <div className={`button-addToCart ${addedToCart ? 'added': ""}`}><button onClick={addToCart}>{addedToCart? "Remove from Cart":"Add to Cart"}</button></div>

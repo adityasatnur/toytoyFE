@@ -2,6 +2,10 @@
   display: flex;
   margin: 3rem auto;
   width: 80%;
+  h2{
+    font-family: "Poppins600", sans-serif;
+margin-bottom: 0.5rem;
+  }
   &>div{
     flex: 0 1 60%;
   }
@@ -14,6 +18,8 @@
     display: flex;
     margin-bottom: 1rem;
     .itemImage {
+      display: flex;
+    align-items: center;
       img {
         border: 1px solid #d4d4d4;
         border-radius: 0.7rem;
@@ -23,6 +29,11 @@
     .itemData {
       font-family: "Poppins400", sans-serif;
       margin: 1rem;
+      .cost{
+        font-size: 12px;
+        color: #b6a9a9;
+      font-family: "Poppins500", sans-serif;
+      }
       button {
         border: none;
         background: #fff;
