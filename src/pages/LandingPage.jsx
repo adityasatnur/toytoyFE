@@ -300,6 +300,28 @@ const LandingPage = (props) => {
         </Slider>
 }
       </div>
+      <div className="credits">
+        <div>
+
+        <p>Use each Credit for every Delivery for rented items.</p>
+        <button>Buy Credits</button>
+        <div className="row">
+          <label htmlFor="name">
+            Pin Code <span className="star">*</span>
+          </label>
+          <input
+            name="pinCode"
+            type="text"
+            defaultValue={414001}
+            onChange={inputChange}
+            minLength='6'
+            maxLength='6'
+          />
+        </div>
+        <div>Credits = 40/- X <input type="number" /> = {}</div>
+        </div>
+        <p>Your Credits: <span>4</span></p>
+      </div>
       <div className="howItWorks">
         <p>How it works!</p>
         <img
