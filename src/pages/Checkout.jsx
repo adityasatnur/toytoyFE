@@ -6,6 +6,8 @@ import sigma from "../assets/icons/sigma.png";
 import axios from "axios";
 import { PORT } from "../serverConfig";
 import DeliveryData from "../components/DeliveryData";
+import {post} from '../functions/paytmFunctions';
+import {pinCodesWithRates} from '../functions/pincodes';
 
 
 const Checkout = (props) => {
@@ -14,11 +16,13 @@ const Checkout = (props) => {
   const [rentedItems, setRentedItems] = useState(null);
   const [plans, setPlans] = useState(undefined);
   const [total, setTotal]= useState(0);
-  const [deliveryCharges, setDeliveryCharges] = useState(0);
+  const [buyoutTotal, setBuyoutTotal]= useState(0);
   const history = useHistory()
+ 
   useEffect(()=>{
     let rented = [];
     let buyout = [];
+    let pin = localStorage.getItem('pinCode')
     let items = JSON.parse(localStorage.getItem('cartItems'))
     let plan = localStorage.getItem('plans')!=='undefined' ?JSON.parse(localStorage.getItem('plans')):localStorage.getItem('plans');
     items && items.map(item=>{
@@ -28,27 +32,33 @@ const Checkout = (props) => {
         rented.push(item)
       }
     })
-
+    
     setBuyoutItems(buyout)
     setRentedItems(rented)
     
     plan && setPlans(plan)
     if(buyoutItems || plan){
       let total = 0;
+      let buyoutTotal = 0
       if(buyoutItems){
         buyoutItems.map((item)=>{
             total+=item.cost
         })
+        buyoutTotal = total;
+        setBuyoutTotal(buyoutTotal)
       }
       if(plan){
         total+=plan.cost
       }
-      if(deliveryCharges > 0){
-        total += deliveryCharges;
+      if(rented.length>0 && buyoutTotal < 799){
+        total += pinCodesWithRates[pin]
+      }
+      if(rented.length>0 && props.userData&&props.userData.credits<=0){
+        total += pinCodesWithRates[pin]
       }
       setTotal(total)
     }
-  }, [localStorage.getItem('cartItems'), localStorage.getItem('plans')])
+  }, [localStorage.getItem('cartItems'), localStorage.getItem('plans'), localStorage.getItem('pinCode')])
 
   const showDeliveryData = () =>{
     setShowProfile(true)
@@ -87,41 +97,7 @@ const Checkout = (props) => {
       //Make api call to add rental items to delivery
     }
   }
-  function post(details) {
-    const form = buildForm(details)
-    document.body.appendChild(form)
-    form.submit()
-    form.remove()
-  }
-  function isDate(val) {
-    // Cross realm comptatible
-    return Object.prototype.toString.call(val) === '[object Date]'
-  }
-  function isObj(val) {
-    return typeof val === 'object'
-  }
-   function stringifyValue(val) {
-    if (isObj(val) && !isDate(val)) {
-      return JSON.stringify(val)
-    } else {
-      return val
-    }
-  }
-  function buildForm({ action, params }) {
-    const form = document.createElement('form')
-    form.setAttribute('method', 'post')
-    form.setAttribute('action', action)
-  
-    Object.keys(params.data).forEach(key => {
-      const input = document.createElement('input')
-      // input.setAttribute('type', 'hidden')
-      input.setAttribute('name', key)
-      input.setAttribute('value', stringifyValue(params.data[key]))
-      form.appendChild(input)
-    })
-  
-    return form
-  }
+
   const removePlan = ()=>{
     localStorage.setItem('plans',undefined)
     setPlans(undefined)
@@ -223,7 +199,7 @@ const Checkout = (props) => {
       
 
     </div>
-          {((buyoutItems && buyoutItems.length>0) ||(rentedItems && rentedItems.length>0) || plans) && showProfile ? <DeliveryData userData={props.userData} redirecToPaytm={redirecToPaytm}></DeliveryData> :null}
+          {((buyoutItems && buyoutItems.length>0) ||(rentedItems && rentedItems.length>0) || plans) && showProfile ? <DeliveryData userData={props.userData} redirecToPaytm={redirecToPaytm} total={buyoutTotal} rentedItemsPresent={(rentedItems && rentedItems.length>0)? true: false}/> :null}
     </>
   );
 };

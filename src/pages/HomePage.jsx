@@ -334,7 +334,7 @@ const HomePage = () => {
         <Route exact path="/Loader" component={Loader} />
 
         <Route path="/">
-          <LandingPage items={items} addToCart={addToCart}/>
+          <LandingPage items={items} addToCart={addToCart} userData={userData} />
         </Route>
       </Switch>
     );

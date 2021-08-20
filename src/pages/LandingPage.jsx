@@ -12,6 +12,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import itemModel from "../../../toytoyBE/itemModel";
+import axios from "axios";
+import { PORT } from "../serverConfig";
+import {post} from '../functions/paytmFunctions';
+
 let pinCodes = [
   "411004",
   "411035",
@@ -117,6 +121,7 @@ let pinCodes = [
   "411044",
   "411006",
 ];
+import { pinCodesWithRates } from "../functions/pincodes";
 
 function NextArrow(props) {
   const { className, onClick } = props;
@@ -152,7 +157,8 @@ const LandingPage = (props) => {
         settings: {
           slidesToShow: 3,
         },
-      },{
+      },
+      {
         breakpoint: 768,
         settings: {
           slidesToShow: 2,
@@ -171,10 +177,13 @@ const LandingPage = (props) => {
   const [pin, setPin] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isDeliverable, setIsDeliverable] = useState(null);
+  const [deliveryCharges, setDeliveryCharges] = useState(0);
+  const [qty, setQty] = useState(1);
   const plans = useRef(null);
   const executeScroll = () => plans.current.scrollIntoView();
-  const [popularToys, setPopularToys]=useState([]);
-  const [popularBooks, setPopularBooks]=useState([]);
+  const [popularToys, setPopularToys] = useState([]);
+  const [popularBooks, setPopularBooks] = useState([]);
+  const [buyingOptions, setBuyingOptions] = useState(false);
   useEffect(() => {
     if (history.location.state && history.location.state.fromPlans) {
       history.push({
@@ -182,13 +191,16 @@ const LandingPage = (props) => {
       });
       executeScroll();
     }
-    if(props.items){
-      let books = props.items.filter(item=> (item.popular === true && item.type==="book"))
-      setPopularBooks(books)
-      let toys = props.items.filter(item=> (item.popular === true && item.type==="toy"))
-      setPopularToys(toys)
+    if (props.items) {
+      let books = props.items.filter(
+        (item) => item.popular === true && item.type === "book"
+      );
+      setPopularBooks(books);
+      let toys = props.items.filter(
+        (item) => item.popular === true && item.type === "toy"
+      );
+      setPopularToys(toys);
     }
-
   }, [history.location.state, props.items]);
   const navigateToPlp = (filt) => {
     history.push({
@@ -196,13 +208,47 @@ const LandingPage = (props) => {
       state: { filteredData: filt },
     });
   };
-  const routeToPDP = (item)=>{
+  const setQuantity = (e) => {
+    let qty = e.target.value;
+    setQty(qty);
+  };
+  const routeToPDP = (item) => {
     history.push({
-        pathname: '/PDP',
-        state: { item: item }
-      });
+      pathname: "/PDP",
+      state: { item: item },
+    });
+  };
+  const inputChange = (e) => {
+    let inputVal = e.target.value;
+    if (pinCodesWithRates[inputVal]) {
+      setDeliveryCharges(pinCodesWithRates[inputVal]);
+    }else{
+      setDeliveryCharges(0);
 
-}
+    }
+    
+  };
+  const redirectToPaytm = () => {
+    let data = {
+      credits: qty,
+      amount: (deliveryCharges*qty),
+      userId: props.userData._id,
+
+    };
+    axios
+      .post(`${PORT}/api/buyCredits`, data)
+      .then((res) => {
+        var information = {
+          action:`https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
+          //action: `https://securegw.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
+          params: res,
+        };
+        post(information);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   const pinCodeChecker = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
@@ -239,10 +285,13 @@ const LandingPage = (props) => {
         break;
     }
     debugger;
-    localStorage.setItem('plans', JSON.stringify(itemData))
+    localStorage.setItem("plans", JSON.stringify(itemData));
     history.push({
       pathname: "/checkout",
     });
+  };
+  const showBuyingOptions = () => {
+    setBuyingOptions(true);
   };
   const pinType = (e) => {
     setPin(e.target.value);
@@ -281,46 +330,61 @@ const LandingPage = (props) => {
       </div>
       <div className="homepageCarousel">
         <div className="header">Popular Toys</div>
-        {popularToys && popularToys.length &&
-        <Slider {...settings}>
-           {popularToys.map((item) => {
-            return (
-              <div>
-                <div className="carousel-product" onClick={()=>routeToPDP(item)}>
-                  <div>
-                    <div
-                      style={{ backgroundImage: `url(${item.image})` }}
-                    ></div>
-                    <p>{item.name}</p>
+        {popularToys && popularToys.length && (
+          <Slider {...settings}>
+            {popularToys.map((item) => {
+              return (
+                <div>
+                  <div
+                    className="carousel-product"
+                    onClick={() => routeToPDP(item)}
+                  >
+                    <div>
+                      <div
+                        style={{ backgroundImage: `url(${item.image})` }}
+                      ></div>
+                      <p>{item.name}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </Slider>
-}
+              );
+            })}
+          </Slider>
+        )}
       </div>
       <div className="credits">
         <div>
-
-        <p>Use each Credit for every Delivery for rented items.</p>
-        <button>Buy Credits</button>
-        <div className="row">
-          <label htmlFor="name">
-            Pin Code <span className="star">*</span>
-          </label>
-          <input
-            name="pinCode"
-            type="text"
-            defaultValue={414001}
-            onChange={inputChange}
-            minLength='6'
-            maxLength='6'
-          />
+          <p>Use each Credit for every Delivery for rented items.</p>
+          <button onClick={showBuyingOptions}>Buy Credits</button>
+          {buyingOptions && (
+            <>
+              <div className="row">
+                <label htmlFor="name">
+                  Pin Code <span className="star">*</span>
+                </label>
+                <input
+                  name="pinCode"
+                  type="text"
+                  defaultValue={props.userData && props.userData.pinCode}
+                  onChange={inputChange}
+                  minLength="6"
+                  maxLength="6"
+                />
+              </div>
+              <div>
+                Credits = {deliveryCharges}&#8377; X{" "}
+                <input type="number" defaultValue={1} onChange={setQuantity} />{" "}
+                = {deliveryCharges * qty}&#8377;
+              </div>
+              {deliveryCharges * qty > 0 && (
+                <button onClick={redirectToPaytm}>Pay Now</button>
+              )}
+            </>
+          )}
         </div>
-        <div>Credits = 40/- X <input type="number" /> = {}</div>
+        <div>
+          Your Credits: <span>4</span>
         </div>
-        <p>Your Credits: <span>4</span></p>
       </div>
       <div className="howItWorks">
         <p>How it works!</p>
@@ -331,23 +395,27 @@ const LandingPage = (props) => {
       </div>
       <div className="homepageCarousel">
         <div className="header">Popular Books</div>
-        {popularBooks && popularBooks.length &&
-        <Slider {...settings}>
-          { popularBooks.map((item) => {
-            return (
-              <div>
-                <div className="carousel-product" onClick={()=>routeToPDP(item)}>
-                  <div>
-                    <div
-                      style={{ backgroundImage: `url(${item.image})` }}
-                    ></div>
-                    <p>{item.name}</p>
+        {popularBooks && popularBooks.length && (
+          <Slider {...settings}>
+            {popularBooks.map((item) => {
+              return (
+                <div>
+                  <div
+                    className="carousel-product"
+                    onClick={() => routeToPDP(item)}
+                  >
+                    <div>
+                      <div
+                        style={{ backgroundImage: `url(${item.image})` }}
+                      ></div>
+                      <p>{item.name}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </Slider>}
+              );
+            })}
+          </Slider>
+        )}
       </div>
       <div className="infoBanners toys">
         <div>
@@ -407,9 +475,14 @@ const LandingPage = (props) => {
           <div className="pricing-item">
             <img src={Seed} alt="" />
             <h3>Seed</h3>
-            <p>Duration: <span className="highlight">1</span> Month</p>
+            <p>
+              Duration: <span className="highlight">1</span> Month
+            </p>
             <p>
               Price: <span className="highlight">500</span>
+            </p>
+            <p>
+              Free Credits: <span className="highlight">0</span>
             </p>
             <p>Deposit: 1000</p>
             <button onClick={() => goToCheckout("Plan1")}>Buy Now</button>
@@ -423,6 +496,9 @@ const LandingPage = (props) => {
             <p>
               Price: <span className="highlight">1400</span>
             </p>
+            <p>
+              Free Credits: <span className="highlight">1</span>
+            </p>
             <p>Deposit: 1000</p>
             <button onClick={() => goToCheckout("Plan2")}>Buy Now</button>
           </div>
@@ -434,6 +510,9 @@ const LandingPage = (props) => {
             </p>
             <p>
               Price: <span className="highlight">2700</span>
+            </p>
+            <p>
+              Free Credits: <span className="highlight">3</span>
             </p>
             <p>No Deposit</p>
             <button onClick={() => goToCheckout("Plan3")}>Buy Now</button>

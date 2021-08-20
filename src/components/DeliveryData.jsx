@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Profile.scss";
 import { PORT } from "../serverConfig";
-const DeliveryData = ({ userData, redirecToPaytm }) => {
+import {pinCodesWithRates} from '../functions/pincodes';
+
+const DeliveryData = ({ userData, redirecToPaytm, total, rentedItemsPresent }) => {
   const [formData, setFormData] = useState({});
   const [userUpdatedMessage, setUserUpdatedMessage] = useState(null);
+  const [deliveryCharges, setDeliveryCharges]= useState(pinCodesWithRates[userData.userPincode]);
+ useEffect(()=>{
+   debugger;
+  let pinCode= formData.pinCode ? formData.pinCode : userData.userPinCode
+  setDeliveryCharges(pinCodesWithRates[pinCode]);
+  localStorage.setItem('pinCode', formData.pinCode ? formData.pinCode : userData.userPinCode)
+
+ }, [formData.pinCode])
   const inputChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -87,11 +97,14 @@ const DeliveryData = ({ userData, redirecToPaytm }) => {
           />
         </div>
         
+          {deliveryCharges && <div className="row"><label></label>Delivery Charges = {total==0 ? 0 : (total>799 ? 0 : deliveryCharges)}</div>}
+          <div className="row"><label></label> Credits : {rentedItemsPresent && (userData.credits>0? "1": `You Dont own any credits. 1 Credit Charges = ${deliveryCharges}`)}</div>
         <div className="row">
           <input
             type="submit"
             value={userUpdatedMessage ? "Payment Done" : "Pay Now"}
             style={{ background: userUpdatedMessage && "#50b061" }}
+            disabled={false}
           />
         </div>
       </form>
