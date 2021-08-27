@@ -383,7 +383,7 @@ const LandingPage = (props) => {
           )}
         </div>
         <div>
-          Your Credits: <span>4</span>
+          Your Credits: <span>{(props.userData && props.userData.credits)?props.userData.credits: 0}</span>
         </div>
       </div>
       <div className="howItWorks">
