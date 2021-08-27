@@ -4,14 +4,14 @@ import "../styles/Profile.scss";
 import { PORT } from "../serverConfig";
 import {pinCodesWithRates} from '../functions/pincodes';
 
-const DeliveryData = ({ userData, redirecToPaytm, total, rentedItemsPresent }) => {
+const DeliveryData = ({ userData, redirecToPaytm, total, rentedItemsPresent, setPinCode }) => {
   const [formData, setFormData] = useState({});
   const [userUpdatedMessage, setUserUpdatedMessage] = useState(null);
   const [deliveryCharges, setDeliveryCharges]= useState(pinCodesWithRates[userData.userPincode]);
  useEffect(()=>{
-   debugger;
   let pinCode= formData.pinCode ? formData.pinCode : userData.userPinCode
   setDeliveryCharges(pinCodesWithRates[pinCode]);
+  setPinCode(formData.pinCode ? formData.pinCode : userData.userPinCode)
   localStorage.setItem('pinCode', formData.pinCode ? formData.pinCode : userData.userPinCode)
 
  }, [formData.pinCode])

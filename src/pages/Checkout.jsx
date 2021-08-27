@@ -17,6 +17,7 @@ const Checkout = (props) => {
   const [plans, setPlans] = useState(undefined);
   const [total, setTotal]= useState(0);
   const [buyoutTotal, setBuyoutTotal]= useState(0);
+  const [pincode, setPincode]= useState(null);
   const history = useHistory()
  
   useEffect(()=>{
@@ -51,15 +52,22 @@ const Checkout = (props) => {
         total+=plan.cost
       }
       if(rented.length>0 && buyoutTotal < 799){
-        total += pinCodesWithRates[pin]
+        if(pincode){
+          total += pinCodesWithRates[pincode]
+        }
       }
       if(rented.length>0 && props.userData&&props.userData.credits<=0){
-        total += pinCodesWithRates[pin]
-      }
+        if(pincode){
+          total += pinCodesWithRates[pincode]
+            }
+        }
       setTotal(total)
     }
-  }, [localStorage.getItem('cartItems'), localStorage.getItem('plans'), localStorage.getItem('pinCode')])
+  }, [pincode])
 
+  const setPinCode=(pin)=>{
+    setPincode(pin)
+  }
   const showDeliveryData = () =>{
     setShowProfile(true)
   }
@@ -84,17 +92,30 @@ const Checkout = (props) => {
       axios.post(`${PORT}/api/payment`, data)
         .then(res => {
           var information={
-             //action:`https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
-               action:`https://securegw.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
+             action:`https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
+             //  action:`https://securegw.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
           params:res
         }
       post(information)
+      localStorage.setItem('cartItems', null)
+      localStorage.setItem('plans', null)
         })
         .catch(function (error) {
           console.log(error);
         });
     }else{
       //Make api call to add rental items to delivery
+      let rentedItemsArray=[]
+      rentedItems.length && rentedItems.map(item=>{
+        return rentedItemsArray.push(item._id)
+      })
+      let data = {
+        name: props.userData.userName,
+        userId: props.userData._id,
+        rentedItems: rentedItemsArray
+            }
+      axios.post(`${PORT}/api/addProductsToDelivery`, data)
+        
     }
   }
 
@@ -114,7 +135,7 @@ const Checkout = (props) => {
       {(buyoutItems && buyoutItems.length)|| ((plans && plans!=='undefined') || (props.userData && props.userData.userPlanType !=="0") ) ?
         <>
           <div>
-            {plans!=='undefined' &&
+            {plans && plans!=='undefined' &&
             <>
             <h2>Plans</h2>
             <div className="itemDetails">
@@ -199,7 +220,7 @@ const Checkout = (props) => {
       
 
     </div>
-          {((buyoutItems && buyoutItems.length>0) ||(rentedItems && rentedItems.length>0) || plans) && showProfile ? <DeliveryData userData={props.userData} redirecToPaytm={redirecToPaytm} total={buyoutTotal} rentedItemsPresent={(rentedItems && rentedItems.length>0)? true: false}/> :null}
+          {((buyoutItems && buyoutItems.length>0) ||(rentedItems && rentedItems.length>0) || plans) && showProfile ? <DeliveryData userData={props.userData} redirecToPaytm={redirecToPaytm} total={buyoutTotal} setPinCode={setPinCode} rentedItemsPresent={(rentedItems && rentedItems.length>0)? true: false}/> :null}
     </>
   );
 };
