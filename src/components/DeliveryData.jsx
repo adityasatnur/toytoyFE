@@ -2,19 +2,29 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Profile.scss";
 import { PORT } from "../serverConfig";
-import {pinCodesWithRates} from '../functions/pincodes';
+import { pinCodesWithRates } from "../functions/pincodes";
 
-const DeliveryData = ({ userData, redirecToPaytm, total, rentedItemsPresent, setPinCode }) => {
+const DeliveryData = ({
+  userData,
+  redirecToPaytm,
+  total,
+  rentedItemsPresent,
+  setPinCode,
+}) => {
   const [formData, setFormData] = useState({});
   const [userUpdatedMessage, setUserUpdatedMessage] = useState(null);
-  const [deliveryCharges, setDeliveryCharges]= useState(pinCodesWithRates[userData.userPincode]);
- useEffect(()=>{
-  let pinCode= formData.pinCode ? formData.pinCode : userData.userPinCode
-  setDeliveryCharges(pinCodesWithRates[pinCode]);
-  setPinCode(formData.pinCode ? formData.pinCode : userData.userPinCode)
-  localStorage.setItem('pinCode', formData.pinCode ? formData.pinCode : userData.userPinCode)
-
- }, [formData.pinCode])
+  const [deliveryCharges, setDeliveryCharges] = useState(
+    pinCodesWithRates[userData.userPincode]
+  );
+  useEffect(() => {
+    let pinCode = formData.pinCode ? formData.pinCode : userData.userPinCode;
+    setDeliveryCharges(pinCodesWithRates[pinCode]);
+    setPinCode(formData.pinCode ? formData.pinCode : userData.userPinCode);
+    localStorage.setItem(
+      "pinCode",
+      formData.pinCode ? formData.pinCode : userData.userPinCode
+    );
+  }, [formData.pinCode]);
   const inputChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -38,12 +48,12 @@ const DeliveryData = ({ userData, redirecToPaytm, total, rentedItemsPresent, set
         },
       })
       .then((res) => {
-          if(res.status===400){
-              console.log(res)
-          }
-          if(res.status===200){
-            console.log(res)
-            redirecToPaytm()
+        if (res.status === 400) {
+          console.log(res);
+        }
+        if (res.status === 200) {
+          console.log(res);
+          redirecToPaytm();
         }
         // setUserUpdatedMessage(res.data.user);
       });
@@ -66,13 +76,13 @@ const DeliveryData = ({ userData, redirecToPaytm, total, rentedItemsPresent, set
           <input
             name="phoneNumber"
             type="text"
-            minLength='10'
-            maxLength='10'
+            minLength="10"
+            maxLength="10"
             defaultValue={userData.userPhoneNumber}
             onChange={inputChange}
           />
         </div>
-                <div className="row">
+        <div className="row">
           <label htmlFor="name">
             Full Home Address <span className="star">*</span>
           </label>
@@ -92,13 +102,31 @@ const DeliveryData = ({ userData, redirecToPaytm, total, rentedItemsPresent, set
             type="text"
             defaultValue={userData.userPincode}
             onChange={inputChange}
-            minLength='6'
-            maxLength='6'
+            minLength="6"
+            maxLength="6"
           />
         </div>
-        
-          {deliveryCharges && <div className="row"><label></label>Delivery Charges = {total==0 ? 0 : (total>799 ? 0 : deliveryCharges)}</div>}
-          <div className="row"><label></label> Credits : {rentedItemsPresent && (userData.credits>0? "1": `You Dont own any credits. 1 Credit Charges = ${deliveryCharges}`)}</div>
+
+        {deliveryCharges ? (
+          <div className="row">
+            <label></label>Delivery Charges ={" "}
+            {total == 0 ? 0 : total > 799 ? 0 : deliveryCharges}
+          </div>
+        ) : (
+          <div className="row">
+            <label></label> Not Delivered to this Pincode
+          </div>
+        )}
+        {rentedItemsPresent && (
+          <div className="row">
+            <label></label> Credits :{" "}
+            {userData.credits > 0
+              ? "1"
+              : `You Dont own any credits. 1 Credit Charges = ${
+                  deliveryCharges ? deliveryCharges : "Pincode not Deliverable"
+                }`}
+          </div>
+        )}
         <div className="row">
           <input
             type="submit"

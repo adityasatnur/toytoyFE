@@ -8,10 +8,10 @@ const MenuList = (props) => {
 return(<>
     <div className="MenuList">
         {/* <p>Popular Toys</p> */}
-        <select>
+        <select onChange={props.changeCategory}>
             <option value="All">All</option>
-            <option value="Toys">Toys</option>
-            <option selected={true} value="Books">Book</option>
+            <option value="toy">Toys</option>
+            <option selected={true} value="book">Book</option>
         </select>
         <div>
             {props.items.map((item)=>{

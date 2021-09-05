@@ -13,7 +13,7 @@ const LoginPopup = (props) => {
         {props.currentUser &&
         <button className="signOut" onClick={props.signOut}>Sign Out</button>}
       </div>
-      <div className="backdrop"></div>
+      <div className="backdrop" onClick={props.closeModel}></div>
     </>
   );
 };

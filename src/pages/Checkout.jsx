@@ -24,6 +24,7 @@ const Checkout = (props) => {
     let rented = [];
     let buyout = [];
     let pin = localStorage.getItem('pinCode')
+    debugger;
     let items = JSON.parse(localStorage.getItem('cartItems'))
     let plan = localStorage.getItem('plans')!=='undefined' ?JSON.parse(localStorage.getItem('plans')):localStorage.getItem('plans');
     items && items.map(item=>{
@@ -37,18 +38,19 @@ const Checkout = (props) => {
     setBuyoutItems(buyout)
     setRentedItems(rented)
     
-    plan && setPlans(plan)
-    if(buyoutItems || plan){
+    plan && plan!=="undefined" && setPlans(plan)
+    debugger;
+    if(buyout || (plan && plan!=="undefined")){
       let total = 0;
       let buyoutTotal = 0
-      if(buyoutItems){
-        buyoutItems.map((item)=>{
+      if(buyout){
+        buyout.map((item)=>{
             total+=item.cost
         })
         buyoutTotal = total;
         setBuyoutTotal(buyoutTotal)
       }
-      if(plan){
+      if(plan && plan!=="undefined"){
         total+=plan.cost
       }
       if(rented.length>0 && buyoutTotal < 799){
@@ -63,9 +65,9 @@ const Checkout = (props) => {
         }
       setTotal(total)
     }
-  }, [pincode])
+  }, [pincode, props.cartItems])
 
-  const setPinCode=(pin)=>{
+  const setthePinCode=(pin)=>{
     setPincode(pin)
   }
   const showDeliveryData = () =>{
@@ -92,8 +94,8 @@ const Checkout = (props) => {
       axios.post(`${PORT}/api/payment`, data)
         .then(res => {
           var information={
-             //action:`https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
-               action:`https://securegw.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
+             action:`https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
+             //  action:`https://securegw.paytm.in/theia/api/v1/showPaymentPage?mid=${res.data.mid}&orderId=${res.data.orderId}`,
           params:res
         }
       post(information)
@@ -132,7 +134,7 @@ const Checkout = (props) => {
   return (
     <>
     <div className="Checkout">
-      {(buyoutItems && buyoutItems.length)|| ((plans && plans!=='undefined') || (props.userData && props.userData.userPlanType !=="0") ) ?
+      {(buyoutItems && buyoutItems.length)|| (rentedItems && rentedItems.length)|| ((plans && plans!=='undefined') || (props.userData && props.userData.userPlanType !=="0") ) ?
         <>
           <div>
             {plans && plans!=='undefined' &&
@@ -206,21 +208,21 @@ const Checkout = (props) => {
               </div>
               <div>
                 <div>Delivery</div>
-                <span>2-4 Days</span>
+                <span>Saturday/Sunday</span>
               </div>
-              <div>Free</div>
+              <div>Check in next step</div>
             </div>
             <div className="sidebar-footer">
               {/* <button  onClick={redirecToPaytm}>Pay Now</button> */}
               <button  onClick={showDeliveryData}>Checkout</button>
             </div>
           </div></>
-          : <div>No Products in the cart. {props.userData && props.userData.userPlanType ==="0"? `Please buy Plans to continue. To buy best suitable plans click `: ""}{props.userData && props.userData.userPlanType ==="0"?<span onClick={redirectToPlans}>HERE</span>: null }</div>}
+          : <div>No Products in the cart. {props.userData && props.userData.userPlanType ==="0"? `Please buy Plans to continue. To buy best suitable plans click `: ""}{props.userData && props.userData.userPlanType ==="0"?<span className="here" onClick={redirectToPlans}>HERE</span>: null }</div>}
 
       
 
     </div>
-          {((buyoutItems && buyoutItems.length>0) ||(rentedItems && rentedItems.length>0) || plans) && showProfile ? <DeliveryData userData={props.userData} redirecToPaytm={redirecToPaytm} total={buyoutTotal} setPinCode={setPinCode} rentedItemsPresent={(rentedItems && rentedItems.length>0)? true: false}/> :null}
+          {((buyoutItems && buyoutItems.length>0) ||(rentedItems && rentedItems.length>0) || plans) && showProfile ? <DeliveryData userData={props.userData} redirecToPaytm={redirecToPaytm} total={buyoutTotal} setPinCode={setthePinCode} rentedItemsPresent={(rentedItems && rentedItems.length>0)? true: false}/> :null}
     </>
   );
 };

@@ -81,7 +81,7 @@ const HomePage = () => {
         history.location.state.filteredData
       ) {
         let x = items.filter(
-          (i) => i.type === history.location.state.filteredData
+          (i) => i.type !== history.location.state.filteredData
         );
         if (items.length > 0 && x.length !== items.length) {
           setFilterApplied(true);
@@ -133,7 +133,22 @@ const HomePage = () => {
       updateOrCreateUser();
     }
   }, [currentUser]);
-
+useEffect(() => {
+  debugger;
+  let purchase
+    if(history.location.state && history.location.state.filteredData==="Library"){
+      purchase = false;
+    }else if(history.location.state && history.location.state.filteredData==="Buyout"){
+      purchase = true;
+    }else{
+      purchase = false;
+    }
+    let x = items.filter(
+      (i) => i.purchasable === purchase
+    );
+    setFilterApplied(true);
+    setFilteredItems(x);
+}, [history.location.state && history.location.state.filteredData])
   const updateOrCreateUser = async () => {
     let data = {
       userName: currentUser.displayName,
@@ -193,8 +208,32 @@ const HomePage = () => {
       setFilteredItems(filteredItemsLocal);
     }
   };
+  const changeCategory= (e)=>{
+    let val = e.target.value;
+    let purchase
+    if(history.location.state && history.location.state.filteredData==="Library"){
+      purchase = false;
+    }else if(history.location.state && history.location.state.filteredData==="Buyout"){
+      purchase = true;
+    }else{
+      purchase = false;
+    }
+    let x = items.filter(
+      (i) => i.type === val && i.purchasable === purchase
+    );
+    if(val==="All"){
+       x = items.filter(
+        (i) => i.purchasable === purchase
+      );
+    }else{
+      
+    }
+    setFilterApplied(true);
+    setFilteredItems(x);
+  }
   const addToCart = (id) => {
     let itemCopy = [...items];
+    debugger;
     let findDuplicateInCart = cartItems.find((item) => item._id === id);
     if (findDuplicateInCart === undefined) {
       let newArr = itemCopy.filter((item) => item._id === id);
@@ -273,6 +312,9 @@ const HomePage = () => {
   const minibagClick = () => {
     SetIsMinibagOpen(!isMinibagOpen);
   };
+  const closeModel = () => {
+    setShowLoginModel(!showLoginModel);
+  };
   const renderPageData = () => {
     return (
       <Switch>
@@ -291,6 +333,7 @@ const HomePage = () => {
                 addToCart={addToCart}
                 items={filterApplied ? filteredItems : items}
                 activetab={activeLibraryTab}
+                changeCategory={changeCategory}
               ></Tabs>
             )}
           </div>
@@ -309,8 +352,12 @@ const HomePage = () => {
           <DeliveriesPage />
         </Route> 
         <Route path="/checkout"  exact>
-        
-          <Checkout addToCart={addToCart} userData={userData}/>
+        {userData ? (
+          <Checkout addToCart={addToCart} userData={userData} cartItems={cartItems}
+        />)
+        : (
+          <p>Please login to continue</p>
+        )}
         </Route>
         <Route path="/aboutus" exact>
           <AboutUs />
@@ -369,12 +416,15 @@ const HomePage = () => {
         currentUser={currentUser}
         openLoginModel={openLoginModel}
         userData={userData}
+        addToCart={addToCart}
+
       />
       {showLoginModel ? (
         <LoginPopup
           currentUser={currentUser}
           signIn={signIn}
           signOut={signOut}
+          closeModel={closeModel}
         />
       ) : null}
       {renderPageData()}

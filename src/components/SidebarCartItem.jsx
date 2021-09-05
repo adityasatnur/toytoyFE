@@ -1,5 +1,5 @@
 import React from "react";
-import toy from '../assets/images/toy.jpeg';
+import Delete from '../assets/icons/delete.png';
 import '../styles/sidebarCartItem.scss'
 
 const SidebarCartItem = (props) => {
@@ -12,6 +12,7 @@ const SidebarCartItem = (props) => {
             <p>{props.item.name}</p>
             </div>
              <p>{props.item.cost}</p> 
+             {props.hideRemoveButton ? <img className="delete" onClick={() => props.addToCart(props.item._id)} src={Delete}/> : null}
         </div>
     )
 }

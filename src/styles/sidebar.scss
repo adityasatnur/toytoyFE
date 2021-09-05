@@ -70,6 +70,9 @@
       font-size: 19px;
       border-radius: 16px;
       font-family: "Poppins500", sans-serif;
+      &:hover{
+        cursor: pointer;
+      }
     }
   }
   &-order-list {
@@ -83,6 +86,9 @@
       margin: 3.5rem 0 1.5rem;
       img {
         width: 20px;
+        &:hover{
+          cursor: pointer;
+        }
       }
     }
   }

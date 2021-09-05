@@ -2,6 +2,9 @@
   width: 80%;
   margin: 2rem auto 8rem;
   display: flex;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
   &-rightBox {
     flex-grow: 1;
     background: #fff;

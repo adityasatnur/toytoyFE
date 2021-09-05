@@ -1,26 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import MenuList from "./MenuList";
 import '../styles/tabs.scss'
+import { useHistory } from "react-router-dom";
+
 
 const Tabs = (props)=>{
     const [activeTab, setActiveTab] = useState("Library")
     const [buyoutItems, setBuyoutItems] = useState([]);
+  const history = useHistory();
+
     const setTabActive=(tabName)=>{
         if(tabName!==activeTab){
             setActiveTab(tabName)
+            history.push({
+                state: { filteredData: tabName },
+              });
         }
     }
-    useEffect(() => {
-        let buyout = props.items.filter(item=> item.purchasable === true);
-        if(!props.activetab){
-            scrollTo(0,0)
-            setActiveTab("Buyout")
-        }
-        if(buyoutItems.length === 0){
-            setBuyoutItems([...buyoutItems, ...buyout])
-        }
-        
-    }, [buyoutItems])
+    
     return(<div>
         <div className="Tabs">
             <div className={`tabButton ${activeTab === "Library" ? 'active': ""}`} onClick={()=>setTabActive("Library")}>Library</div>
@@ -29,8 +26,9 @@ const Tabs = (props)=>{
         </div>
             <MenuList 
             addToCart={props.addToCart} 
-            items={activeTab === "Library" ? props.items: buyoutItems} 
+            items={props.items} 
             showPrices={activeTab === "Buyout" ? true: false}
+            changeCategory={props.changeCategory}
             ></MenuList>
             </div>
     )   
