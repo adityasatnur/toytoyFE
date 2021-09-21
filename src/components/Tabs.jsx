@@ -8,13 +8,16 @@ const Tabs = (props)=>{
     const [activeTab, setActiveTab] = useState("Library")
     const [buyoutItems, setBuyoutItems] = useState([]);
   const history = useHistory();
-
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  })
     const setTabActive=(tabName)=>{
         if(tabName!==activeTab){
             setActiveTab(tabName)
             history.push({
                 state: { filteredData: tabName },
               });
+              props.changeCategory()
         }
     }
     

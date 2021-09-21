@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack server --open --hot --mode development",
     "build": "webpack --mode production",
-    "deploy": "webpack --mode production && firebase deploy"
+    "deploy": "webpack --mode production && firebase deploy --only hosting:toytoy-frontend"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "react-router-dom": "^5.2.0",
     "react-search": "^2.1.1",
     "react-slick": "^0.28.1",
+    "react-table": "^7.7.0",
     "regenerator-runtime": "^0.13.7",
     "resolve-url-loader": "^4.0.0",
     "slick-carousel": "^1.8.1",

@@ -57,6 +57,7 @@ const HomePage = () => {
   const sidebarRef = useRef();
   const minibagRef = useRef();
 
+
   useEffect(() => {
 
     if (currentUser === null) {
@@ -81,7 +82,7 @@ const HomePage = () => {
         history.location.state.filteredData
       ) {
         let x = items.filter(
-          (i) => i.type !== history.location.state.filteredData
+          (i) => i.type === history.location.state.filteredData
         );
         if (items.length > 0 && x.length !== items.length) {
           setFilterApplied(true);
@@ -134,7 +135,6 @@ const HomePage = () => {
     }
   }, [currentUser]);
 useEffect(() => {
-  debugger;
   let purchase
     if(history.location.state && history.location.state.filteredData==="Library"){
       purchase = false;
@@ -185,8 +185,9 @@ useEffect(() => {
   const applyFiltersHandler = () => {
     setFilterApplied(true);
     let filteredItemsLocal = [];
+    debugger;
     if (filters.length > 0) {
-      items.filter((item) => {
+      filterApplied && filteredItems.filter((item) => {
         filters.forEach((el) => {
           let x = item.category.find((i) => i.name === el);
           let y = item.ageGroup.find((i) => i.name === el);
@@ -201,6 +202,8 @@ useEffect(() => {
       });
     } else {
       filteredItemsLocal = [...items];
+      setFilteredItems(filteredItemsLocal);
+      return;
     }
     if (filteredItemsLocal.length === 0) {
       setFilteredItems(new Array());
@@ -211,6 +214,7 @@ useEffect(() => {
   const changeCategory= (e)=>{
     let val = e.target.value;
     let purchase
+    debugger;
     if(history.location.state && history.location.state.filteredData==="Library"){
       purchase = false;
     }else if(history.location.state && history.location.state.filteredData==="Buyout"){
@@ -218,6 +222,9 @@ useEffect(() => {
     }else{
       purchase = false;
     }
+    history.push({
+      state: { filteredData: val },
+    });
     let x = items.filter(
       (i) => i.type === val && i.purchasable === purchase
     );

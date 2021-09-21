@@ -5,7 +5,7 @@ const Loader = () => {
 return(
     <div className="planetbody">
 
-<div class="planet"></div>
+<div className="planet"></div>
     </div>
 )
 }

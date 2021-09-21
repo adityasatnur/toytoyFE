@@ -185,6 +185,9 @@ const LandingPage = (props) => {
   const [popularBooks, setPopularBooks] = useState([]);
   const [buyingOptions, setBuyingOptions] = useState(false);
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  useEffect(() => {
     if (history.location.state && history.location.state.fromPlans) {
       history.push({
         state: { ...history.location.state, fromPlans: false },

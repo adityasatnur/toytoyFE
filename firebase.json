@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "toytoy-frontend",
     "public": "dist",
     "ignore": [
       "firebase.json",

@@ -2,8 +2,16 @@ import React from "react";
 import "../styles/footer.scss";
 import Facebook from "../assets/icons/facebook.png";
 import Instagram from "../assets/icons/instagram.png";
+import { useHistory } from "react-router-dom";
 
 const Footer = (props) => {
+  const history = useHistory();
+  const navigateToPlp = (filt) => {
+    history.push({
+      pathname: "/PLP",
+      state: { filteredData: filt },
+    });
+  };
   return (
     <>
       <div className="Footer">
@@ -23,8 +31,8 @@ const Footer = (props) => {
           <p className="heading">Links</p>
 
           <div onClick={()=>props.navigateTo('home')}>Home</div>
-          <div onClick={()=>props.navigateTo('toy')}>Toys</div>
-          <div onClick={()=>props.navigateTo('book')}>Books</div>
+          <div onClick={()=>navigateToPlp('toy')}>Toys</div>
+          <div onClick={()=>navigateToPlp('book')}>Books</div>
           <div onClick={()=>props.navigateTo('PLP')}>All Products</div>
           <div onClick={()=>props.navigateTo('profile')}>Profile</div>
           <p className="heading">Company</p>
@@ -44,12 +52,12 @@ const Footer = (props) => {
           <p className="heading">Connect with us</p>
           <div className="social">
             <div>
-              <a href="fb.com/toytoylibrary">
+              <a href="https://fb.com/toytoylibrary">
                 <img src={Facebook} alt="" />
               </a>
             </div>
             <div>
-              <a href="Instagram.com/toytoylibrary">
+              <a href="https://Instagram.com/toytoylibrary">
                 <img src={Instagram} alt="" />
               </a>
             </div>

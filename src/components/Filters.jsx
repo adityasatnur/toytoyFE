@@ -32,6 +32,7 @@ import age1 from "../assets/icons/0-2.png";
 import age2 from "../assets/icons/2-5.png";
 import age3 from "../assets/icons/5-7.png";
 import age4 from "../assets/icons/7-99.png";
+import { useHistory } from "react-router-dom";
 
 const toyCategoriesFilter = [
     {
@@ -123,10 +124,12 @@ const productSetFilter = [
 ]
 
 const Filters = ({addFilter, removeFilter, applyFiltersHandler}) => {
+    const history = useHistory();
 return(
     <div className="Filters">Filters
     
         <Accordion allowZeroExpanded={true}>
+            {history.location.state==undefined || history.location.state.filteredData!=="book"?
             <AccordionItem>
                 <AccordionItemHeading>
                     <AccordionItemButton>
@@ -138,6 +141,9 @@ return(
                 <button onClick={applyFiltersHandler}>Apply Filters</button>
                 </AccordionItemPanel>
             </AccordionItem>
+            :null}
+            {history.location.state==undefined || history.location.state.filteredData!=="toy"?
+
             <AccordionItem>
                 <AccordionItemHeading>
                     <AccordionItemButton>
@@ -149,6 +155,8 @@ return(
                 <button onClick={applyFiltersHandler}>Apply Filters</button>
                 </AccordionItemPanel>
             </AccordionItem>
+            :null}
+
             <AccordionItem>
                 <AccordionItemHeading>
                     <AccordionItemButton>

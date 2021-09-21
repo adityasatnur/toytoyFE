@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Profile.scss";
 import { PORT } from "../serverConfig";
@@ -11,6 +11,9 @@ const Profile = ({ userData }) => {
     let form = { ...formData, [name]: value };
     setFormData(form);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const updateProfile = async (e) => {
     e.preventDefault();
     let data = {
